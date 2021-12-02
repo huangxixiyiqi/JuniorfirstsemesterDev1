@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>登录</title>
+  <!-- 重置样式表 -->
+  <link rel="stylesheet" href="./css/reset.css">
+  <link rel="stylesheet" href="./css/normalize.css">
+  <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <!-- 引入样式 -->
+  <link rel="stylesheet" href="https://unpkg.com/element-ui@2.15.7/lib/theme-chalk/index.css">
+
+  <!-- 引入组件库 -->
+  <!-- <script src="https://unpkg.com/element-ui/lib/index.js"></script> -->
+  <script src="js/index.js"></script>
+  <!-- 引入axios -->
+  <!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script> -->
+  <script src="js/axios.min.js"></script>
+  <!-- MDB icon -->
+  <link rel="icon" href="img/" type="image/x-icon">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <!-- Material Design Bootstrap -->
+  <link rel="stylesheet" href="css/mdb.min.css">
+  <!-- Your custom styles (optional) -->
+  <link rel="stylesheet" href="css/style.css">
+  <!-- 注册登录样式 -->
+  <link rel="stylesheet" href="./css/homepage.css" >
+
+ 
+
+
+</head>
+
+<body>
+  <div id="app">
+    <div id="outside">
+      <div class="b">
+        <h1 id="h1">房 地 产 开 发 系 统 </h1>
+      </div>
+      <!--Main container-->
+      <div class="insider" >
+        <h1 id="h">登 录</h1>
+        <div id="d">
+          <el-form class="e" :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px"
+            style="margin-top: 20px;margin-right: 20px;" class="demo-ruleForm">
+            <el-form-item label="账号" prop="account">
+              <el-input   v-model.number="ruleForm.account"></el-input>
+            </el-form-item>
+            <el-form-item label="密码" prop="pass">
+              <el-input  type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button class="bt" type="primary" @click="submitForm('ruleForm')">登录</el-button>
+              <el-button  @click="register()">注册</el-button>
+            </el-form-item>
+          </el-form>
+        </div>
+      </div>
+      
+      <!--Main container-->
+    </div>
+
+
+  </div>
+
+  <script>
+    var app = new Vue({
+      el: "#app",
+      data() {
+        var checkAccount = (rule, value, callback) => {
+          if (!value) {
+            return callback(new Error('账号不能为空'));
+          }
+
+        };
+        var validatePass = (rule, value, callback) => {
+          if (value === '') {
+            callback(new Error('请输入密码'));
+          } else {
+            if (this.ruleForm.checkPass !== '') {
+              this.$refs.ruleForm.validateField('checkPass');
+            }
+            callback();
+          }
+        };
+        return {
+          
+          ruleForm: {
+            pass: '',
+            account: ''
+          },
+          rules: {
+            pass: [
+              { validator: validatePass, trigger: 'blur' }
+            ],
+            account: [
+              { validator: checkAccount, trigger: 'blur' }
+            ]
+          }
+        };
+      },
+      methods: {
+        submitForm(formName) {
+          if (this.ruleForm.account == 1 && this.ruleForm.pass == 1) {
+            //不能以 ; 分割，只会保存第一个 ;  前的数据
+            document.cookie = '彭海栗大帅哥,111,1'
+            window.location.href = './admin/admin.html'//跳转
+            //window.location.href = './frontdesk/frontdesk.html'//跳转
+            //window.location.href = './staff/staff.html'//跳转
+            //window.location.href = './supervisor/supervisor.html'//跳转
+          }
+          this.$refs[formName].validate((valid) => {
+            if (valid) {
+              alert('submit!');
+            } else {
+              console.log('error submit!!');
+              return false;
+            }
+          });
+        },
+        register() {
+          window.location.href = './register.html'//跳转
+        }
+      }
+
+    })
+  </script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,24 @@
+html,
+body,
+header,
+#intro {
+    height: 100%;
+}
+
+#intro {
+    background: url(https://img1.baidu.com/it/u=1999528604,3079771869&fm=26&fmt=auto&gp=0.jpg)no-repeat center center fixed;
+    -webkit-background-size: cover; /* 针对Chrome, Safari, Edge等浏览器 */
+    -moz-background-size: cover;    /* 针对Firefox浏览器 */
+    -o-background-size: cover;      /* 针对Operallq */
+    background-size: cover;         /* 通用 */
+}
+.el-dropdown-link {
+    cursor: pointer;
+    color: white;
+  }
+#personal{
+    color: black;
+}
+#user:hover{
+    color: aqua;
+}

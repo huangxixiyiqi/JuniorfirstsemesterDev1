@@ -1,0 +1,8 @@
+/* 把bootstrap4 dropdown 的导航下拉菜单触发方式改为鼠标浮动触发 */
+.dropdown:hover>.dropdown-menu {
+    display: block;
+}
+
+.dropdown>.dropdown-toggle:active {
+    pointer-events: none;
+}
