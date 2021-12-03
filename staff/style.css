@@ -22,3 +22,6 @@ header,
 #user:hover{
     color: aqua;
 }
+.nav-color{
+    background-color: blue !important;
+}
