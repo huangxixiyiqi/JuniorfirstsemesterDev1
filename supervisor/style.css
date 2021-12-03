@@ -19,8 +19,12 @@ header,
 #personal{
     color: black;
 }
+#user{
+    font-size: 1.1rem;
+}
 #user:hover{
     color: aqua;
+    
 }
 /* 导航栏颜色 */
 .nav-color{

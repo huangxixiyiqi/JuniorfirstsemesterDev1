@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-26 10:45:02
- * @LastEditTime: 2021-12-03 10:31:46
+ * @LastEditTime: 2021-12-03 21:16:48
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \FrontEndcode\staff\index.html
@@ -107,6 +107,11 @@
                 </div>
                 <!-- 用户栏 -->
                 <div>
+                    <div class="user-notice">
+                        <a href="#">
+                            <el-badge :is-dot="notice" class="notice-item">通知</el-badge>
+                        </a>
+                    </div>
                     <el-dropdown>
                         <span class="el-dropdown-link" id="user">
                             {{username}}
@@ -115,6 +120,10 @@
                             <el-dropdown-item divided>
                                 <i class="el-icon-user"></i>
                                 <a id="personal" href="#">个人资料</a>
+                            </el-dropdown-item>
+                            <el-dropdown-item divided id="trans" style="display: none;">
+                                <i class="el-icon-thumb"></i>
+                                <a id="personal" href="../supervisor/supervisor.html">切换主管系统</a>
                             </el-dropdown-item>
                             <el-dropdown-item divided>
                                 <div @click="exit">
@@ -164,14 +173,22 @@
     </div>
 
     <script>
-
+        // 切换主管系统按钮
+        var trans = document.getElementById("trans");
+        console.log(trans.style)
+        //登录信息
         var data = document.cookie.split(",")
         var app = new Vue({
             el: "#app",
+            created() {
+                //合并时，读取账号信息，如果该账号是员工，则不显示切换按钮，是主管则显示
+                trans.style.display="block"
+            },
             data() {
                 return {
                     username: data[0],
                     src: "../img/mdb-favicon.ico",
+                    notice:true  //true则显示红点，false不显示红点
                 };
 
             },

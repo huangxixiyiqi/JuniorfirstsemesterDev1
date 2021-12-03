@@ -19,9 +19,29 @@ header,
 #personal{
     color: black;
 }
+#user{
+    font-size: 1.1rem;
+}
 #user:hover{
     color: aqua;
+    
 }
 .nav-color{
     background-color: blue !important;
 }
+
+.user-notice{
+    float: left;
+    position: relative;
+    left: -10px;
+}
+.notice-item{
+    color: white;
+    font-size: 1.1rem;
+}
+.user-notice:hover{
+    transform: scale(0.95,0.95);
+    transition: all 1s;
+}
+
+
