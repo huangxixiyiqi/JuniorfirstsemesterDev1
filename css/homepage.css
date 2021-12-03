@@ -60,11 +60,9 @@ body {
     font-weight: bold;
     font-size: 50px;
 }
-#e {
-    border-top-style: none;
-    border-left-style: none;
-    border-right-style: none;
-    border-color: blue;
+.e {
+    position: relative;
+    top: -30px;
 }
 /* 输入框样式 */
 .e .el-input__inner {
@@ -89,8 +87,15 @@ body {
 
 .e button{
     border-radius: 25px;
+    position: relative;
+    left: -20px;
 }
 .e button:hover{
     background-color: hotpink;
     box-shadow: 2px 2px 5px  black;
+}
+.e label{
+    position: relative;
+    left: -10px;
+    top: 10px;
 }
