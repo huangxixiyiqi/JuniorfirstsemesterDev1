@@ -1,0 +1,26 @@
+/* 解决高度塌陷 */
+.clearfix::after,
+.clearfix::before{
+    content: "";
+    display: table;
+    clear: both;
+}
+a{
+    text-decoration: none;
+    
+}
+body{
+    font-family: ProximaNova,Arial,Sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #333;
+    /* 最小宽度，不能缩小 */
+    min-width: 1226px;
+}
+
+.w{
+    /* 固定容器的宽度 */
+    width: 1226px;
+    /* 居中 */
+    margin: 0 auto;
+}
