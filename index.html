@@ -32,7 +32,8 @@
   <link rel="stylesheet" href="css/style.css">
   <!-- 注册登录样式 -->
   <link rel="stylesheet" href="./css/homepage.css" >
-
+  <!-- 基础样式 -->
+  <link rel="stylesheet" href="./css/base.css">
  
 
 
@@ -51,7 +52,7 @@
           <el-form class="e" :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px"
             style="margin-top: 20px;margin-right: 20px;" class="demo-ruleForm">
             <el-form-item label="账号" prop="account">
-              <el-input   v-model.number="ruleForm.account"></el-input>
+              <el-input   v-model.number="ruleForm.account" autofocus></el-input>
             </el-form-item>
             <el-form-item label="密码" prop="pass">
               <el-input  type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
@@ -109,8 +110,9 @@
       methods: {
         submitForm(formName) {
           if (this.ruleForm.account == 1 && this.ruleForm.pass == 1) {
-            //不能以 ; 分割，只会保存第一个 ;  前的数据
-            document.cookie = '彭海栗大帅哥,111,1'
+            //保存cookie信息，=号前面是Name，=后面是value
+            document.cookie = 'user=彭海栗大帅哥;path=/'
+            document.cookie = 'password=123;path=/'
             window.location.href = './admin/admin.html'//跳转
             //window.location.href = './frontdesk/frontdesk.html'//跳转
             //window.location.href = './staff/staff.html'//跳转

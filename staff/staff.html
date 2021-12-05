@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-26 10:45:02
- * @LastEditTime: 2021-12-03 21:16:48
+ * @LastEditTime: 2021-12-05 20:32:55
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \FrontEndcode\staff\index.html
@@ -54,7 +54,9 @@
     <script type="text/javascript" src="../js/mdb.min.js"></script>
     <!-- Your custom scripts (optional) -->
     <script type="text/javascript"></script>
-
+    <script type="text/javascript" src="../js/deletecookie.js"></script>
+    <!-- 基础样式 -->
+    <link rel="stylesheet" href="../css/base.css">
 </head>
 
 <body>
@@ -109,7 +111,9 @@
                 <div>
                     <div class="user-notice">
                         <a href="#">
-                            <el-badge :is-dot="notice" class="notice-item">通知</el-badge>
+                            <el-badge :is-dot="notice" class="notice-item">
+                                <i class="el-icon-message-solid "></i>
+                            </el-badge>
                         </a>
                     </div>
                     <el-dropdown>
@@ -168,7 +172,15 @@
             </div>
             <!--Main container-->
         </main>
-
+        <!-- 回到顶部工具栏 -->
+        <div class="to-top">
+            <a href="#">
+                <i class="el-icon-top" title="回到顶部"></i>
+            </a>
+            <a href="#">
+                <i class="el-icon-user" title="个人资料"></i>
+            </a>
+        </div>
 
     </div>
 
@@ -176,19 +188,18 @@
         // 切换主管系统按钮
         var trans = document.getElementById("trans");
         console.log(trans.style)
-        //登录信息
-        var data = document.cookie.split(",")
+
         var app = new Vue({
             el: "#app",
             created() {
                 //合并时，读取账号信息，如果该账号是员工，则不显示切换按钮，是主管则显示
-                trans.style.display="block"
+                trans.style.display = "block"
             },
             data() {
                 return {
-                    username: data[0],
+                    username: getCookie('user'),
                     src: "../img/mdb-favicon.ico",
-                    notice:true  //true则显示红点，false不显示红点
+                    notice: true  //true则显示红点，false不显示红点
                 };
 
             },
@@ -207,6 +218,8 @@
 
                 },
                 exit: function () {
+                    delCookie('user')
+                    delCookie('password')
                     window.location.href = '../index.html'
                 }
 

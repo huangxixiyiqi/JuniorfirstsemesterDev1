@@ -6,42 +6,76 @@ header,
 }
 
 #intro {
-    background: url(https://img1.baidu.com/it/u=1999528604,3079771869&fm=26&fmt=auto&gp=0.jpg)no-repeat center center fixed;
+    background: url(https://img1.baidu.com/it/u=1999528604,3079771869&fm=26&fmt=auto&gp=0.jpg) no-repeat center center
+        fixed;
     -webkit-background-size: cover; /* 针对Chrome, Safari, Edge等浏览器 */
-    -moz-background-size: cover;    /* 针对Firefox浏览器 */
-    -o-background-size: cover;      /* 针对Operallq */
-    background-size: cover;         /* 通用 */
+    -moz-background-size: cover; /* 针对Firefox浏览器 */
+    -o-background-size: cover; /* 针对Operallq */
+    background-size: cover; /* 通用 */
 }
 .el-dropdown-link {
     cursor: pointer;
     color: white;
-  }
-#personal{
+}
+#personal {
     color: black;
 }
-#user{
+#user {
     font-size: 1.1rem;
 }
-#user:hover{
+#user:hover {
     color: aqua;
-    
 }
-.nav-color{
+.nav-color {
     background-color: blue !important;
 }
 
-.user-notice{
+.user-notice {
     float: left;
     position: relative;
     left: -10px;
 }
-.notice-item{
+.notice-item {
     color: white;
     font-size: 1.1rem;
 }
-.user-notice:hover{
-    transform: scale(0.95,0.95);
+.user-notice:hover {
+    transform: scale(0.95, 0.95);
     transition: all 1s;
 }
+/* 通知红点闪烁动画 */
+@keyframes bell {
+    from {
+        transform: scale(1, 1);
+    }
+    to {
+        transform: scale(1.5, 1.5);
+    }
+}
+.el-badge__content {
+    left: 12px;
+    animation-name: bell;
+    animation-duration: 0.5s;
+    animation-iteration-count: infinite;
+}
 
-
+/* 页面右侧回到顶部工具栏 */
+.to-top {
+    width: 26px;
+    background-color: white;
+    position: fixed;
+    top: 70%;
+    right: 4%;
+}
+.to-top i {
+    color: black;
+    width: 26px;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+    font-size: 16px;
+}
+.to-top i:hover {
+    transform: scale(0.8);
+    transition: 0.3s;
+}

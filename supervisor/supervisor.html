@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-26 10:48:58
- * @LastEditTime: 2021-12-03 20:39:41
+ * @LastEditTime: 2021-12-05 20:12:44
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \FrontEndcode\supervisor\index.html
@@ -54,6 +54,9 @@
     <script type="text/javascript" src="../js/mdb.min.js"></script>
     <!-- Your custom scripts (optional) -->
     <script type="text/javascript"></script>
+    <script type="text/javascript" src="../js/deletecookie.js"></script>
+    <!-- 基础样式 -->
+    <link rel="stylesheet" href="../css/base.css">
 
 </head>
 
@@ -98,7 +101,7 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="#">意见</a>
                             </li>
-                            
+
                         </ul>
                         <!-- Links -->
 
@@ -164,20 +167,27 @@
             </div>
             <!--Main container-->
         </main>
-
+        <!-- 回到顶部工具栏 -->
+        <div class="to-top">
+            <a href="#">
+                <i class="el-icon-top" title="回到顶部"></i>
+            </a>
+            <a href="#">
+                <i class="el-icon-user" title="个人资料"></i>
+            </a>
+        </div>
 
     </div>
 
     <script>
-        var data = document.cookie.split(",")
+
         var app = new Vue({
             el: "#app",
             data() {
                 return {
-                    username: data[0],
+                    username: getCookie('user'),
                     src: "../img/mdb-favicon.ico",
                 };
-
             },
             methods: {
                 test: function () {
@@ -193,6 +203,8 @@
 
                 },
                 exit: function () {
+                    delCookie('user')
+                    delCookie('password')
                     window.location.href = '../index.html'
                 }
 
