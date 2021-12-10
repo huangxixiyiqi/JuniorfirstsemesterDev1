@@ -30,6 +30,7 @@
   <link rel="stylesheet" href="./css/homepage.css">
   <!-- 基础样式 -->
   <link rel="stylesheet" href="./css/base.css">
+  <script src="./global.js"></script>
 </head>
 
 <body>
@@ -53,7 +54,7 @@
             <el-form-item label="确认密码" prop="checkPass">
               <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item label="身份" >
+            <el-form-item label="身份">
               <el-select v-model="value" placeholder="请选择身份">
                 <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
                 </el-option>
@@ -108,6 +109,11 @@
             account: '',
             checkPass: '',
           },
+          user: {
+            account: '',
+            pass: '',
+            id: ''
+          },
           rules: {
             pass: [
               { validator: validatePass, trigger: 'blur' }
@@ -120,29 +126,36 @@
             ],
           },
           options: [{
-            value: '选项1',
+            value: '主管',
             label: '主管'
           }, {
-            value: '选项2',
+            value: '员工',
             label: '员工'
           }, {
             value: '前台',
             label: '前台'
-          }, ],
+          },],
           value: ''
         };
       },
       methods: {
         submitForm(formName) {
-
-          this.$refs[formName].validate((valid) => {
-            if (valid) {
-              alert('submit!');
-            } else {
-              console.log('error submit!!');
-              return false;
-            }
-          });
+          if (this.ruleForm['pass'] != this.ruleForm['checkPass']) {
+            alert("两次输入的密码不一致")
+            return false;
+          }
+          else {
+            var data = {}
+            this.user.account = this.ruleForm.account
+            this.user.pass = this.ruleForm.pass
+            this.user.id = this.value
+            console.log(port + "user/register/")
+            console.log(this.user)
+            axios.post(port + "user/register/", this.user).then(res => {
+              console.log(1)
+              console.log(res.data)
+            })
+          }
         },
         login() {
           window.location.href = './index.html'//跳转
