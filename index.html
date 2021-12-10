@@ -110,6 +110,11 @@
       methods: {
         submitForm(formName) {
           if (this.ruleForm.account == 1 && this.ruleForm.pass == 1) {
+            // axios.get('http://localhost:8080/stock/getbyid/1').then(res => {
+            //             this.message = res.data['stockname']
+            //             console.log(res.data)
+
+            //         })
             //保存cookie信息，=号前面是Name，=后面是value
             document.cookie = 'user=彭海栗大帅哥;path=/'
             document.cookie = 'password=123;path=/'
