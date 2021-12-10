@@ -111,7 +111,7 @@
           },
           user: {
             account: '',
-            pass: '',
+            password: '',
             id: ''
           },
           rules: {
@@ -141,13 +141,18 @@
       methods: {
         submitForm(formName) {
           if (this.ruleForm['pass'] != this.ruleForm['checkPass']) {
-            alert("两次输入的密码不一致")
+            this.$message({
+              showClose: true,
+              message: "两次输入密码不一致!",
+              type: 'error'
+            });
+            
             return false;
           }
           else {
             var data = {}
             this.user.account = this.ruleForm.account
-            this.user.pass = this.ruleForm.pass
+            this.user.password = this.ruleForm.pass
             this.user.id = this.value
             console.log(port + "user/register/")
             console.log(this.user)

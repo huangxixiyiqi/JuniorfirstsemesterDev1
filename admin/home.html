@@ -1,10 +1,10 @@
 <!--
  * @Author: your name
- * @Date: 2021-11-26 10:43:01
- * @LastEditTime: 2021-12-06 16:21:22
+ * @Date: 2021-12-10 19:27:05
+ * @LastEditTime: 2021-12-10 20:38:17
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- * @FilePath: \FrontEndcode\frontdesk\index.html
+ * @FilePath: \FrontEndcode\admin\home.html
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -13,7 +13,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Frontdesk</title>
+    <title>Administrator</title>
     <!-- 重置样式表 -->
     <link rel="stylesheet" href="./css/reset.css">
     <link rel="stylesheet" href="./css/normalize.css">
@@ -57,19 +57,21 @@
     <script type="text/javascript" src="../js/deletecookie.js"></script>
     <!-- 基础样式 -->
     <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="./css/home.css">
     <script src="../global.js"></script>
+    
 </head>
 
 <body>
 
 
-    <div id="app" style="height: 100%;">
+    <div id="app" >
         <header>
             <!--Navbar-->
-            <nav class="navbar navbar-expand-md navbar-dark 	nav-color">
+            <nav class="navbar navbar-expand-md navbar-dark nav-color ">
                 <div class="container">
                     <!-- Navbar brand -->
-                    <a class="navbar-brand" href="./frontdesk.html">Frontdesk</a>
+                    <a class="navbar-brand" href="./admin.html">Administrator</a>
                     <!-- Collapse button -->
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav"
                         aria-controls="basicExampleNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -80,12 +82,41 @@
                         <!-- Links -->
                         <ul class="navbar-nav mr-auto">
                             <li class="nav-item active">
-                                <a class="nav-link" href="./frontdesk.html">Home
+                                <a class="nav-link" href="./admin.html">Home
                                     <span class="sr-only">(current)</span>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">员工信息建立</a>
+                                <a class="nav-link" href="#">查看项目进度</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">修改项目资料</a>
+                            </li>
+                            <!-- Dropdown -->
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">员工信息</a>
+                                <div class="dropdown-menu dropdown-primary " aria-labelledby="navbarDropdownMenuLink">
+                                    <a class="dropdown-item" href="#">查询员工信息</a>
+                                    <a class="dropdown-item" href="#">修改员工信息</a>
+                                    <a class="dropdown-item" href="#">查看员工评价</a>
+                                    <a class="dropdown-item" href="#">修改员工评价</a>
+                                </div>
+                            </li>
+                            <!-- Dropdown -->
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">客户信息</a>
+                                <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
+                                    <a class="dropdown-item" href="#">查询客户信息</a>
+                                    <a class="dropdown-item" href="#">修改客户信息</a>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">计算工资</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">设置账号权限</a>
                             </li>
                             <!-- Dropdown -->
                             <li class="nav-item dropdown">
@@ -113,8 +144,7 @@
                         </span>
                         <el-dropdown-menu slot="dropdown">
                             <el-dropdown-item divided>
-
-                                <a id="personal" href="./home.html"><i class="el-icon-user"></i>个人资料</a>
+                                <a id="personal" href="home.html"><i class="el-icon-user"></i>个人资料</a>
                             </el-dropdown-item>
                             <el-dropdown-item divided>
                                 <div @click="exit">
@@ -127,38 +157,53 @@
                 </div>
             </nav>
             <!--/.Navbar-->
-            <!--Mask-->
-            <div id="intro" class="view">
-
-                <div class="mask rgba-black-strong">
-
-                    <div class="container-fluid d-flex align-items-center justify-content-center h-100">
-
-                        <div class="row d-flex justify-content-center text-center">
-
-                            <div class="col-md-10">
-
-                                <!-- Heading -->
-                                <h2 class="display-4 font-weight-bold white-text pt-5 mb-2">Frontdesk</h2>
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-            <!--/.Mask-->
         </header>
 
-        <main class="mt-5">
-            <!--Main container-->
-            <div class="main">
-
+        <div class="card-wrapper  clearfix">
+            <div class="left-nav">
+                <div class="title">
+                    <span>个人中心</span>
+                </div>
             </div>
-            <!--Main container-->
-        </main>
+            <div class="inner">
+                <div class="top">
+                    
+                    <span>| 我的信息</span>
+                </div>
+                <div class="content">
+                    <el-form  ref="form" :model="form" label-width="80px" style="margin: 0 auto;">
+                        <el-form-item class="e" label="姓名：">
+                            <el-input v-model="form.name" ></el-input>
+                        </el-form-item>
+                        <el-form-item  class="e" label="账号：">
+                            <el-input v-model="form.account"></el-input>
+                        </el-form-item>
+                        <el-form-item label="身份：">
+                            <el-select v-model="form.id" :placeholder="idph">
+                                <el-option label="主管" value="主管"></el-option>
+                                <el-option label="员工" value="员工"></el-option>
+                                <el-option label="前台" value="前台"></el-option>
+                            </el-select>
+                        </el-form-item>             
+                        <el-form-item label="部门：">
+                            <el-radio-group v-model="form.department">
+                              <el-radio label="线上品牌商赞助"></el-radio>
+                              <el-radio label="线下场地免费"></el-radio>
+                              <el-radio label="线下1场地免费"></el-radio>
+                            </el-radio-group>
+                          </el-form-item>
+                        <el-form-item class="p" label="手机号：">
+                            <el-input type="text" v-model="form.phone"></el-input>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button class="savebtn" type="primary" @click="onSubmit">保存</el-button>
+                        </el-form-item>
+                    </el-form>
+                </div>
+            </div>
+        </div>
+
+
         <!-- 回到顶部工具栏 -->
         <div class="to-top">
             <a href="#">
@@ -179,22 +224,18 @@
                 return {
                     username: getCookie('user'),
                     src: "../img/mdb-favicon.ico",
+                    form: {
+                        name: getCookie('user'),
+                        account: getCookie('account'),
+                        id: '',
+                        department: '',
+                        phone: ''
+                    },
+                    idph:'111',
+                    
                 };
-
             },
             methods: {
-                test: function () {
-                    // axios.get('http://localhost:8080/stock/getbyid/1').then(res => {
-                    //     this.message = res.data['stockname']
-                    //     console.log(res.data)
-
-                    // })
-
-
-                    //window.location.href = 'index.html'//跳转
-
-
-                },
                 exit: function () {
                     delCookie('user')
                     delCookie('password')
