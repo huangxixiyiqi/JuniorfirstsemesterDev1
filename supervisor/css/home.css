@@ -1,0 +1,58 @@
+.card-wrapper {
+    background-color: #fafafa;
+    border: 1px solid #e1e2e5;
+    box-shadow: 0 0 10px 10px #f1f1f1;
+    width: 980px;
+    margin: 0 auto;
+    margin-top: 100px;
+}
+.left-nav {
+    float: left;
+    width: 150px;
+    height: 100%;
+    background-color: #fafafa;
+}
+.left-nav .title {
+    border-bottom: 1px solid #e1e2e5;
+    line-height: 51px;
+}
+.left-nav .title span {
+    display: block;
+    font-size: 16px;
+    color: #c2d0c6;
+    height: 51px;
+    text-align: center;
+}
+.inner {
+    float: left;
+    background-color: #ffffff;
+    width: 828px;
+    border-left: 1px solid #e1e2e5;
+}
+.inner .top {
+    border-bottom: 1px solid #e1e2e5;
+    line-height: 51px;
+}
+.inner .top span {
+    display: block;
+    font-size: 14px;
+    color: #00a1d6;
+    height: 51px;
+    margin-left: 25px;
+}
+.inner .content {
+    margin: 0 auto;
+    padding: 20px 40px 0;
+}
+.e .el-input__inner {
+    width: 225px;
+    height: 30px;
+}
+.p .el-input__inner {
+    width: 245px;
+    height: 30px;
+}
+.savebtn {
+    border-radius: 100px;
+    width: 100px;
+}

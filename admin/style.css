@@ -1,10 +1,20 @@
+.clearfix::before,
+.clearfix::after{
+    content: "";
+    display: table;
+    clear: both;
+}
 html,
 body,
 header,
 #intro {
     height: 100%;
+    
 }
-
+.w{
+    width: 1190px;
+    margin: 0 auto;
+}
 #intro {
     background: url("../img/sample.jpg") no-repeat center center fixed;
     -webkit-background-size: cover; /* 针对Chrome, Safari, Edge等浏览器 */
@@ -37,7 +47,8 @@ header,
     background-color: white;
     position: fixed;
     top: 70%;
-    right: 4%;
+    right: 20%;
+    border: 1px solid #f4f4f4;
 }
 .to-top i{
     color: black;
