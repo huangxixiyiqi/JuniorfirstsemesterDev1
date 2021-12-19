@@ -12,7 +12,7 @@ header,
     
 }
 .w{
-    width: 1190px;
+    width: 1200px;
     margin: 0 auto;
 }
 #intro {
@@ -47,7 +47,7 @@ header,
     background-color: white;
     position: fixed;
     top: 70%;
-    right: 20%;
+    right: 4%;
     border: 1px solid #f4f4f4;
 }
 .to-top i{

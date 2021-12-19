@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-12-10 19:27:05
- * @LastEditTime: 2021-12-10 20:38:17
+ * @LastEditTime: 2021-12-17 11:13:29
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \FrontEndcode\admin\home.html
@@ -87,38 +87,22 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">查看项目进度</a>
+                                <a class="nav-link" href="project.html">项目管理</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">修改项目资料</a>
+                                <a class="nav-link" href="./staffinfo.html">员工管理</a>
                             </li>
-                            <!-- Dropdown -->
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
-                                    aria-haspopup="true" aria-expanded="false">员工信息</a>
-                                <div class="dropdown-menu dropdown-primary " aria-labelledby="navbarDropdownMenuLink">
-                                    <a class="dropdown-item" href="#">查询员工信息</a>
-                                    <a class="dropdown-item" href="#">修改员工信息</a>
-                                    <a class="dropdown-item" href="#">查看员工评价</a>
-                                    <a class="dropdown-item" href="#">修改员工评价</a>
-                                </div>
-                            </li>
-                            <!-- Dropdown -->
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
-                                    aria-haspopup="true" aria-expanded="false">客户信息</a>
-                                <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
-                                    <a class="dropdown-item" href="#">查询客户信息</a>
-                                    <a class="dropdown-item" href="#">修改客户信息</a>
-                                </div>
-                            </li>
+
                             <li class="nav-item">
                                 <a class="nav-link" href="#">计算工资</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#">设置账号权限</a>
                             </li>
-                            <!-- Dropdown -->
+                            <li class="nav-item">
+                                <a class="nav-link" href="./customer.html">客户管理</a>
+                            </li>
+                            <!-- Dropdown
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
                                     aria-haspopup="true" aria-expanded="false">客户管理</a>
@@ -128,7 +112,7 @@
                                     <a class="dropdown-item" href="#">客户信息修改</a>
                                     <a class="dropdown-item" href="#">客户信息查询</a>
                                 </div>
-                            </li>
+                            </li> -->
                         </ul>
                         <!-- Links -->
 
@@ -144,7 +128,7 @@
                         </span>
                         <el-dropdown-menu slot="dropdown">
                             <el-dropdown-item divided>
-                                <a id="personal" href="home.html"><i class="el-icon-user"></i>个人资料</a>
+                                <a id="personal" href="./home.html"><i class="el-icon-user"></i>个人资料</a>
                             </el-dropdown-item>
                             <el-dropdown-item divided>
                                 <div @click="exit">
@@ -164,10 +148,12 @@
                 <div class="title">
                     <span>个人中心</span>
                 </div>
+                <div class="left-item">
+                    <a>我的信息</a>
+                </div>
             </div>
             <div class="inner">
                 <div class="top">
-                    
                     <span>| 我的信息</span>
                 </div>
                 <div class="content">

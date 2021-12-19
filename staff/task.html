@@ -1,0 +1,430 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-12-18 19:50:26
+ * @LastEditTime: 2021-12-18 20:25:39
+ * @LastEditors: Please set LastEditors
+ * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ * @FilePath: \FrontEndcode\staff\task.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff</title>
+    <!-- 重置样式表 -->
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/normalize.css">
+    <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- <script src="//unpkg.com/vue/dist/vue.js"></script> -->
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui@2.15.7/lib/theme-chalk/index.css">
+    <!-- <link rel="stylesheet" href="../css/index.css"> -->
+
+    <!-- 引入组件库 -->
+    <!-- <script src="https://unpkg.com/element-ui/lib/index.js"></script> -->
+    <script src="../js/index.js"></script>
+    <!-- <script src="//unpkg.com/element-ui@2.15.7/lib/index.js"></script> -->
+
+
+    <!-- 引入axios -->
+    <!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script> -->
+    <script src="../js/axios.min.js"></script>
+    <!-- MDB icon -->
+    <link rel="icon" href="../img/mdb-favicon.ico" type="image/x-icon">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <!-- Material Design Bootstrap -->
+    <link rel="stylesheet" href="../css/mdb.min.css">
+    <!-- Your custom styles (optional) -->
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="./style.css">
+    <!-- jQuery -->
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <!-- Bootstrap tooltips -->
+    <script type="text/javascript" src="../js/popper.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="../js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript" src="../js/mdb.min.js"></script>
+    <!-- Your custom scripts (optional) -->
+    <script type="text/javascript"></script>
+    <script type="text/javascript" src="../js/deletecookie.js"></script>
+    <!-- 基础样式 -->
+    <link rel="stylesheet" href="../css/base.css">
+    <script src="../global.js"></script>
+    <link rel="stylesheet" href="./css/task.css">
+</head>
+
+<body>
+
+
+    <div id="app">
+        <header>
+            <!--Navbar-->
+            <nav class="navbar navbar-expand-md navbar-dark 	nav-color">
+                <div class="container">
+                    <!-- Navbar brand -->
+                    <a class="navbar-brand" href="./staff.html">Staff</a>
+                    <!-- Collapse button -->
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav"
+                        aria-controls="basicExampleNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <!-- Collapsible content -->
+                    <div class="collapse navbar-collapse" id="basicExampleNav">
+                        <!-- Links -->
+                        <ul class="navbar-nav mr-auto">
+                            <li class="nav-item active">
+                                <a class="nav-link" href="./staff.html">Home
+                                    <span class="sr-only">(current)</span>
+                                </a>
+                            </li>
+                            <!-- Dropdown -->
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">项目</a>
+                                <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
+                                    <a class="dropdown-item" href="#">查看项目信息</a>
+                                    <a class="dropdown-item" href="#">查看项目进度</a>
+                                    <a class="dropdown-item" href="#">查看项目文件</a>
+
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">查询客户信息</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">修改意见</a>
+                            </li>
+                        </ul>
+                        <!-- Links -->
+
+                    </div>
+
+                    <!-- Collapsible content -->
+                </div>
+                <!-- 用户栏 -->
+                <div>
+                    <div class="user-notice">
+                        <a href="./task.html">
+                            <el-badge :is-dot="notice" class="notice-item">
+                                <i class="el-icon-message-solid "></i>
+                            </el-badge>
+                        </a>
+                    </div>
+                    <el-dropdown>
+                        <span class="el-dropdown-link" id="user">
+                            {{username}}
+                        </span>
+                        <el-dropdown-menu slot="dropdown">
+                            <el-dropdown-item divided>
+
+                                <a id="personal" href="./home.html"><i class="el-icon-user"></i>个人资料</a>
+                            </el-dropdown-item>
+                            <el-dropdown-item divided id="trans" style="display: none;">
+                                <a id="personal" href="../supervisor/supervisor.html"><i
+                                        class="el-icon-thumb"></i>切换主管系统</a>
+                            </el-dropdown-item>
+                            <el-dropdown-item divided>
+                                <div @click="exit">
+                                    <i class="el-icon-circle-close"></i>
+                                    <span>退出</span>
+                                </div>
+                            </el-dropdown-item>
+                        </el-dropdown-menu>
+                    </el-dropdown>
+                </div>
+            </nav>
+            <!--/.Navbar-->
+
+        </header>
+
+        <div class="card-wrapper  clearfix">
+            <div class="left-nav">
+                <div class="title">
+                    <span>任务中心</span>
+                </div>
+                <div class="left-item " id="c-list" @click="changetoList()">
+                    <a id="c-list-a"><i class="el-icon-user-solid"></i> 新的任务</a>
+                </div>
+                <div class="left-item " id="c-new" @click="changetoNew()">
+                    <a id="c-new-a"><i class="el-icon-circle-plus"></i> 已接任务</a>
+                </div>
+            </div>
+            <div class="inner">
+                <div class="top">
+                    <span>| {{innertitle}}</span>
+                </div>
+                <div class="content">
+                    <!-- 新任务列表 -->
+                    <el-tooltip class="item" effect="dark" content="双击左键查看任务详细信息" placement="top-start">
+                        <el-table :data="tableData" height="900" style="width: 100%;" id="content1"
+                            @cell-dblclick="openDetails">
+                            <el-table-column label="任务Id" prop="id" class="td-id" width="150">
+                            </el-table-column>
+                            <el-table-column label="任务性质" prop="name" width="150">
+                            </el-table-column>
+                            <el-table-column label="主管Id" prop="principal" width="150">
+                            </el-table-column>
+                            <el-table-column label="员工Id" prop="customer" width="150">
+                            </el-table-column>
+                            <el-table-column label="任务状态" prop="status" width="150">
+                            </el-table-column>
+                            <el-table-column label="任务接受" prop="status" width="150">
+                            </el-table-column>
+                            <el-table-column>
+                                <template slot="header" slot-scope="scope">
+                                    操作
+                                </template>
+
+                                <template slot-scope="scope">
+                                    <el-button @click="handleEdit(scope.$index, scope.row)">接受</el-button>
+                                    <el-button type="danger" @click="handleDelete(scope.$index, scope.row)">
+                                        拒绝</el-button>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </el-tooltip>
+
+                    <!-- 已接任务列表 -->
+                    <el-tooltip class="item" effect="dark" content="双击左键查看任务详细信息" placement="top-start">
+                        <el-table :data="tableData" height="900" style="width: 100%;" id="content2"
+                            @cell-dblclick="openDetails">
+                            <el-table-column label="任务Id" prop="id" class="td-id" width="150">
+                            </el-table-column>
+                            <el-table-column label="任务性质" prop="name" width="150">
+                            </el-table-column>
+                            <el-table-column label="主管Id" prop="principal" width="150">
+                            </el-table-column>
+                            <el-table-column label="员工Id" prop="customer" width="150">
+                            </el-table-column>
+                            <el-table-column label="任务状态" prop="status" width="150">
+                            </el-table-column>
+                            <el-table-column label="任务接受" prop="status" width="150">
+                            </el-table-column>
+                            <el-table-column>
+                                <template slot="header" slot-scope="scope">
+                                    操作
+                                </template>
+
+                                <template slot-scope="scope">
+                                    <el-button @click="handleEdit(scope.$index, scope.row)">接受</el-button>
+                                    <el-button type="danger" @click="handleDelete(scope.$index, scope.row)">
+                                        拒绝</el-button>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </el-tooltip>
+
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 任務详细信息 -->
+        <!-- 需修改 -->
+        <el-dialog title="任务详细信息" :visible.sync="dialogVisible2" id="dialog3">
+
+            <el-form ref="temp" :model="temp" label-width="100px">
+
+                <el-form-item label="项目Id">
+                    <el-input v-model="temp.name" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="主管Id">
+                    <el-input v-model="temp.principal" :disabled="true"></el-input>
+
+                </el-form-item>
+                <el-form-item label="员工Id">
+                    <el-input  v-model="temp.customer" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="任务描述">
+                    <el-input type="textarea" v-model="temp.customer" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="任务开始时间">
+                    <el-col :span="11">
+                        <el-date-picker :disabled="true" type="date" placeholder="选择日期" v-model="temp.date1"
+                            style="width: 100%;">
+                        </el-date-picker>
+                    </el-col>
+                    <el-col class="line" :span="2">-</el-col>
+                    <el-col :span="11">
+                        <el-time-picker :disabled="true" placeholder="选择时间" v-model="temp.date2" style="width: 100%;">
+                        </el-time-picker>
+                    </el-col>
+                </el-form-item>
+                <el-form-item label="任务结束时间">
+                    <el-col :span="11">
+                        <el-date-picker :disabled="true" type="date" placeholder="选择日期" v-model="temp.date1"
+                            style="width: 100%;">
+                        </el-date-picker>
+                    </el-col>
+                    <el-col class="line" :span="2">-</el-col>
+                    <el-col :span="11">
+                        <el-time-picker :disabled="true" placeholder="选择时间" v-model="temp.date2" style="width: 100%;">
+                        </el-time-picker>
+                    </el-col>
+                </el-form-item>
+                <el-form-item label="任务进度">
+                    <el-input v-model="temp.price" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="任务状态">
+                    <el-input v-model="temp.status" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="任务是否接受">
+                    <el-input v-model="temp.status" :disabled="true"></el-input>
+                </el-form-item>
+                <el-divider></el-divider>
+
+
+            </el-form>
+
+        </el-dialog>
+
+
+
+
+        <!-- 回到顶部工具栏 -->
+        <div class="to-top">
+            <a href="#">
+                <i class="el-icon-top" title="回到顶部"></i>
+            </a>
+            <a href="./home.html">
+                <i class="el-icon-user" title="个人资料"></i>
+            </a>
+        </div>
+    </div>
+    <script>
+        // 切换主管系统按钮
+        var trans = document.getElementById("trans");
+        console.log(trans.style)
+
+        var app = new Vue({
+            el: "#app",
+            created() {
+                //合并时，读取账号信息，如果该账号是员工，则不显示切换按钮，是主管则显示
+                trans.style.display = "block"
+            },
+            data() {
+                return {
+                    username: getCookie('user'),
+                    src: "../img/mdb-favicon.ico",
+                    notice: true,  //true则显示红点，false不显示红点
+                    innertitle: '新的任务',
+                    dialogVisible2: false,
+                    tableData: [{
+                        id: '1',
+                        name: '扫黄打黑',
+                        principal: '彭海丽',
+                        customer: "范美浩",
+                        status: '未完成',
+                        date1: '1',
+                        date2: '2'
+                    }, {
+                        id: '1',
+                        name: 'pornhub',
+                        principal: '彭海丽',
+                        customer: "范美浩",
+                        status: '未完成'
+                    }, {
+                        id: '1',
+                        name: '扫黄打黑',
+                        principal: '彭海丽',
+                        customer: "范美浩",
+                        status: '未完成'
+                    }, {
+                        id: '1',
+                        name: '扫黄打黑',
+                        principal: '彭海丽',
+                        customer: "范美浩",
+                        status: '未完成'
+                    }, {
+                        id: '1',
+                        name: '扫黄打黑',
+                        principal: '彭海丽',
+                        customer: "范美浩",
+                        status: '未完成'
+                    }, {
+                        id: '1',
+                        name: '扫黄打黑',
+                        principal: '彭海丽',
+                        customer: "范美浩",
+                        status: '未完成'
+                    }, {
+                        id: '1',
+                        name: '扫黄打黑',
+                        principal: '彭海丽',
+                        customer: "范美浩",
+                        status: '未完成'
+                    }, {
+                        id: '1',
+                        name: '扫黄打黑',
+                        principal: '彭海丽',
+                        customer: "范美浩",
+                        status: '未完成'
+                    }],
+                    temp: {
+                        name: '',
+                        date1: '',
+                        date2: '',
+                        principal: '',
+                        customer: '',
+                        price: ''
+                    },
+
+                };
+
+
+            },
+            methods: {
+                exit: function () {
+                    delCookie('user')
+                    delCookie('password')
+                    window.location.href = '../index.html'
+                },
+                changetoList() {
+                    // 修改左侧导航栏的样式
+                    document.getElementById("c-list").style.backgroundColor = '#fafafa'
+                    document.getElementById("c-new").style.backgroundColor = '#fafafa'
+                    document.getElementById("c-new-a").style.color = '#222222'
+                    document.getElementById("c-list-a").style.color = '#222222'
+                    document.getElementById("c-list").style.backgroundColor = '#00a1d7'
+                    document.getElementById("c-list-a").style.color = 'white'
+                    // 修改顶部title内容
+                    this.innertitle = '新的任务'
+                    document.getElementById("content1").style.display = 'block'
+                    document.getElementById("content2").style.display = 'none'
+                },
+                changetoNew() {
+                    document.getElementById("c-list").style.backgroundColor = '#fafafa'
+                    document.getElementById("c-new").style.backgroundColor = '#fafafa'
+                    document.getElementById("c-new-a").style.color = '#222222'
+                    document.getElementById("c-list-a").style.color = '#222222'
+                    document.getElementById("c-new").style.backgroundColor = '#00a1d7'
+                    document.getElementById("c-new-a").style.color = 'white'
+                    this.innertitle = '已接任务'
+                    document.getElementById("content1").style.display = 'none'
+                    document.getElementById("content2").style.display = 'block'
+                },
+
+                // 打开项目详细弹出框
+                openDetails(row, column, event) {
+                    console.log(row)
+                    this.temp = row
+                    this.dialogVisible2 = true
+                },
+            }
+
+        })
+    </script>
+
+
+</body>
+
+</html>

@@ -31,10 +31,10 @@
   <!-- Your custom styles (optional) -->
   <link rel="stylesheet" href="css/style.css">
   <!-- 注册登录样式 -->
-  <link rel="stylesheet" href="./css/homepage.css" >
+  <link rel="stylesheet" href="./css/homepage.css">
   <!-- 基础样式 -->
   <link rel="stylesheet" href="./css/base.css">
- 
+
 
 
 </head>
@@ -46,25 +46,25 @@
         <h1 id="h1">房 地 产 开 发 系 统 </h1>
       </div>
       <!--Main container-->
-      <div class="insider" >
+      <div class="insider">
         <h1 id="h">登 录</h1>
         <div id="d">
           <el-form class="e" :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px"
             style="margin-top: 20px;margin-right: 20px;" class="demo-ruleForm">
             <el-form-item label="账号" prop="account">
-              <el-input   v-model.number="ruleForm.account" autofocus></el-input>
+              <el-input v-model.number="ruleForm.account" autofocus></el-input>
             </el-form-item>
             <el-form-item label="密码" prop="pass">
-              <el-input  type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
+              <el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button class="bt" type="primary" @click="submitForm('ruleForm')">登录</el-button>
-              <el-button  @click="register()">注册</el-button>
+              <el-button class="bt" type="primary" @click="submitForm('ruleForm')" >登录</el-button>
+              <el-button @click="register()">注册</el-button>
             </el-form-item>
           </el-form>
         </div>
       </div>
-      
+
       <!--Main container-->
     </div>
 
@@ -72,6 +72,7 @@
   </div>
 
   <script>
+    
     var app = new Vue({
       el: "#app",
       data() {
@@ -92,7 +93,7 @@
           }
         };
         return {
-          
+
           ruleForm: {
             pass: '',
             account: ''

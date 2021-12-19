@@ -16,7 +16,20 @@
     border-bottom: 1px solid #e1e2e5;
     line-height: 51px;
 }
-.left-nav .title span {
+.left-nav .left-item{
+    border-bottom: 1px solid #e1e2e5;
+    line-height: 51px;
+    background-color: #00a1d7;
+}
+.left-nav .left-item a{
+    display: block;
+    font-size: 14px;
+    color: white;
+    height: 51px;
+    text-align: center;
+}
+.left-nav .title span
+{
     display: block;
     font-size: 16px;
     color: #c2d0c6;
@@ -35,7 +48,7 @@
 }
 .inner .top span {
     display: block;
-    font-size: 14px;
+    font-size: 18px;
     color: #00a1d6;
     height: 51px;
     margin-left: 25px;

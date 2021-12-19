@@ -1,0 +1,792 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-12-17 11:09:51
+ * @LastEditTime: 2021-12-18 20:25:00
+ * @LastEditors: Please set LastEditors
+ * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ * @FilePath: \FrontEndcode\admin\project.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrator</title>
+    <!-- 重置样式表 -->
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/normalize.css">
+    <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- <script src="//unpkg.com/vue/dist/vue.js"></script> -->
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui@2.15.7/lib/theme-chalk/index.css">
+    <!-- <link rel="stylesheet" href="../css/index.css"> -->
+
+    <!-- 引入组件库 -->
+    <!-- <script src="https://unpkg.com/element-ui/lib/index.js"></script> -->
+    <script src="../js/index.js"></script>
+    <!-- <script src="//unpkg.com/element-ui@2.15.7/lib/index.js"></script> -->
+
+
+    <!-- 引入axios -->
+    <!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script> -->
+    <script src="../js/axios.min.js"></script>
+    <!-- MDB icon -->
+    <link rel="icon" href="../img/mdb-favicon.ico" type="image/x-icon">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <!-- Material Design Bootstrap -->
+    <link rel="stylesheet" href="../css/mdb.min.css">
+    <!-- Your custom styles (optional) -->
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="./style.css">
+    <!-- jQuery -->
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <!-- Bootstrap tooltips -->
+    <script type="text/javascript" src="../js/popper.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="../js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript" src="../js/mdb.min.js"></script>
+    <!-- Your custom scripts (optional) -->
+    <script type="text/javascript"></script>
+    <script type="text/javascript" src="../js/deletecookie.js"></script>
+    <!-- 基础样式 -->
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="./css/project.css">
+    <script src="../global.js"></script>
+
+</head>
+
+<body>
+
+
+    <div id="app">
+        <header>
+            <!--Navbar-->
+            <nav class="navbar navbar-expand-md navbar-dark nav-color ">
+                <div class="container">
+                    <!-- Navbar brand -->
+                    <a class="navbar-brand" href="./admin.html">Administrator</a>
+                    <!-- Collapse button -->
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav"
+                        aria-controls="basicExampleNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <!-- Collapsible content -->
+                    <div class="collapse navbar-collapse" id="basicExampleNav">
+                        <!-- Links -->
+                        <ul class="navbar-nav mr-auto">
+                            <li class="nav-item active">
+                                <a class="nav-link" href="./admin.html">Home
+                                    <span class="sr-only">(current)</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="project.html">项目管理</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="./staffinfo.html">员工管理</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">计算工资</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">设置账号权限</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="./customer.html">客户管理</a>
+                            </li>
+                            <!-- Dropdown
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">客户管理</a>
+                                <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
+                                    <a class="dropdown-item" href="#">客户信息建立</a>
+                                    <a class="dropdown-item" href="#">客户信息删除</a>
+                                    <a class="dropdown-item" href="#">客户信息修改</a>
+                                    <a class="dropdown-item" href="#">客户信息查询</a>
+                                </div>
+                            </li> -->
+                        </ul>
+                        <!-- Links -->
+
+                    </div>
+
+                    <!-- Collapsible content -->
+                </div>
+                <!-- 用户栏 -->
+                <div>
+                    <el-dropdown>
+                        <span class="el-dropdown-link" id="user">
+                            {{username}}
+                        </span>
+                        <el-dropdown-menu slot="dropdown">
+                            <el-dropdown-item divided>
+                                <a id="personal" href="./home.html"><i class="el-icon-user"></i>个人资料</a>
+                            </el-dropdown-item>
+                            <el-dropdown-item divided>
+                                <div @click="exit">
+                                    <i class="el-icon-circle-close"></i>
+                                    <span>退出</span>
+                                </div>
+                            </el-dropdown-item>
+                        </el-dropdown-menu>
+                    </el-dropdown>
+                </div>
+            </nav>
+            <!--/.Navbar-->
+        </header>
+
+        <div class="card-wrapper  clearfix">
+            <div class="left-nav">
+                <div class="title">
+                    <span>项目中心</span>
+                </div>
+                <div class="left-item " id="c-list" @click="changetoList()">
+                    <a id="c-list-a"><i class="el-icon-user-solid"></i> 项目列表</a>
+                </div>
+                <div class="left-item " id="c-new" @click="changetoNew()">
+                    <a id="c-new-a"><i class="el-icon-circle-plus"></i> 新建项目</a>
+                </div>
+            </div>
+            <div class="inner">
+                <div class="top">
+                    <span>| {{innertitle}}</span>
+                </div>
+                <div class="content">
+                    <!-- 项目列表 -->
+                    <el-tooltip class="item" effect="dark" content="双击左键查看项目详细信息" placement="top-start">
+                        <el-table :data="tableData" height="900" style="width: 100%;" id="content1"
+                            @cell-dblclick="openDetails">
+                            <el-table-column label="项目Id" prop="id" class="td-id" width="150">
+                            </el-table-column>
+                            <el-table-column label="项目名称" prop="name" width="200">
+                            </el-table-column>
+                            <el-table-column label="项目负责人" prop="principal" width="150">
+                            </el-table-column>
+                            <el-table-column label="客户负责人" prop="customer" width="150">
+                            </el-table-column>
+                            <el-table-column label="项目状态" prop="status" width="100">
+                            </el-table-column>
+                            <el-table-column>
+                                <template slot="header" slot-scope="scope">
+                                    <div style="width: 50%; height: 50px;margin-right: 1px;">
+                                        <el-input v-model="search_name" size="mini" placeholder="输入项目名称搜索"
+                                            @input="query()" />
+                                    </div>
+                                    <div style="width: 50%; height: 50px;">
+                                        <el-input v-model="search_phone" size="mini" placeholder="输入客户名称搜索"
+                                            @input="query()" />
+                                    </div>
+                                </template>
+
+                                <template slot-scope="scope">
+                                    <el-button @click="handletask(scope.$index, scope.row)">分配任务</el-button>
+                                    <el-button @click="handleEdit(scope.$index, scope.row)">更新项目信息</el-button>
+                                    <el-button type="danger" @click="handleDelete(scope.$index, scope.row)">
+                                        删除项目</el-button>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </el-tooltip>
+
+                    <!-- 新建项目 -->
+                    <el-form ref="form" :model="form" label-width="100px" id="content2">
+                        <el-form-item label="项目名称">
+                            <el-input v-model="form.name"></el-input>
+                        </el-form-item>
+                        <el-form-item label="项目负责人">
+                            <el-select v-model="form.principal" placeholder="请选择项目负责人">
+                                <el-option v-for="item in options1" :key="item.value" :label="item.label"
+                                    :value="item.value">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="客户负责人">
+                            <el-select v-model="form.customer" placeholder="请选择客户负责人">
+                                <el-option v-for="item in options2" :key="item.value" :label="item.label"
+                                    :value="item.value">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="开始时间">
+                            <el-col :span="11">
+                                <el-date-picker type="date" placeholder="选择日期" v-model="form.date1"
+                                    style="width: 100%;"></el-date-picker>
+                            </el-col>
+                            <el-col class="line" :span="2">-</el-col>
+                            <el-col :span="11">
+                                <el-time-picker placeholder="选择时间" v-model="form.date2" style="width: 100%;">
+                                </el-time-picker>
+                            </el-col>
+                        </el-form-item>
+                        <el-form-item label="项目报价">
+                            <el-input v-model="form.price"></el-input>
+                        </el-form-item>
+
+                        <el-form-item>
+                            <el-button type="primary" @click="onSubmit">立即创建</el-button>
+
+                        </el-form-item>
+                    </el-form>
+                </div>
+
+            </div>
+        </div>
+        <!-- 修改项目对话框 -->
+        <el-dialog title="修改项目信息" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
+            <el-form ref="form" :model="form" label-width="100px">
+                <el-form-item label="项目名称">
+                    <el-input v-model="form.name"></el-input>
+                </el-form-item>
+                <el-form-item label="项目负责人">
+                    <el-select v-model="form.principal" placeholder="请选择项目负责人">
+                        <el-option v-for="item in options1" :key="item.value" :label="item.label" :value="item.value">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="客户负责人">
+                    <el-select v-model="form.customer" placeholder="请选择客户负责人">
+                        <el-option v-for="item in options2" :key="item.value" :label="item.label" :value="item.value">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="开始时间">
+                    <el-col :span="11">
+                        <el-date-picker type="date" placeholder="选择日期" v-model="form.date1" style="width: 100%;">
+                        </el-date-picker>
+                    </el-col>
+                    <el-col class="line" :span="2">-</el-col>
+                    <el-col :span="11">
+                        <el-time-picker placeholder="选择时间" v-model="form.date2" style="width: 100%;">
+                        </el-time-picker>
+                    </el-col>
+                </el-form-item>
+                <el-form-item label="项目报价">
+                    <el-input v-model="form.price"></el-input>
+                </el-form-item>
+
+                <el-form-item>
+                    <el-button type="primary" @click="onSubmit">修改</el-button>
+                    <el-button @click="dialogVisible = false ">取消</el-button>
+                </el-form-item>
+            </el-form>
+        </el-dialog>
+
+        <!-- 分配任务对话框 -->
+        <el-dialog title="分配任务" :visible.sync="dialogVisible1" width="30%" :before-close="handleClose">
+
+            <el-form ref="form1" :model="form1" label-width="80px">
+
+                <el-form-item label="任务描述">
+                    <el-input type="textarea" v-model="form1.task_content"></el-input>
+                </el-form-item>
+                <el-form-item label="选择员工">
+                    <el-select v-model="form1.staff" placeholder="请选择员工">
+                        <el-option label="区域一" value="shanghai"></el-option>
+                        <el-option label="区域二" value="beijing"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="开始时间">
+                    <el-col :span="11">
+                        <el-date-picker type="date" placeholder="选择日期" v-model="form1.begin_date1" style="width: 100%;">
+                        </el-date-picker>
+                    </el-col>
+                    <el-col class="line" :span="2">-</el-col>
+                    <el-col :span="11">
+                        <el-time-picker placeholder="选择时间" v-model="form1.begin_date2" style="width: 100%;">
+                        </el-time-picker>
+                    </el-col>
+                </el-form-item>
+                <el-form-item label="结束时间">
+                    <el-col :span="11">
+                        <el-date-picker type="date" placeholder="选择日期" v-model="form1.end_date1" style="width: 100%;">
+                        </el-date-picker>
+                    </el-col>
+                    <el-col class="line" :span="2">-</el-col>
+                    <el-col :span="11">
+                        <el-time-picker placeholder="选择时间" v-model="form1.end_date2" style="width: 100%;">
+                        </el-time-picker>
+                    </el-col>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" @click="onSubmit">立即分配</el-button>
+                    <el-button @click="dialogVisible1 = false">取消</el-button>
+                </el-form-item>
+            </el-form>
+        </el-dialog>
+
+        <!-- 项目详细信息 -->
+        <!-- 需修改 -->
+        <el-dialog title="项目详细信息" :visible.sync="dialogVisible2" id="dialog3">
+
+            <el-form ref="form" :model="temp" label-width="100px">
+
+                <el-form-item label="项目名称">
+                    <el-input v-model="temp.name" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="项目负责人">
+                    <el-input v-model="temp.principal" :disabled="true"></el-input>
+
+                </el-form-item>
+                <el-form-item label="客户负责人">
+                    <el-input v-model="temp.customer" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="开始时间">
+                    <el-col :span="11">
+                        <el-date-picker :disabled="true" type="date" placeholder="选择日期" v-model="temp.date1"
+                            style="width: 100%;">
+                        </el-date-picker>
+                    </el-col>
+                    <el-col class="line" :span="2">-</el-col>
+                    <el-col :span="11">
+                        <el-time-picker :disabled="true" placeholder="选择时间" v-model="temp.date2" style="width: 100%;">
+                        </el-time-picker>
+                    </el-col>
+                </el-form-item>
+                <el-form-item label="项目报价">
+                    <el-input v-model="temp.price" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="项目状态">
+                    <el-input v-model="temp.status" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="项目进度">
+                    <el-progress :text-inside="true" :stroke-width="26" :percentage="70" style="line-height: 40px;">
+                    </el-progress>
+                </el-form-item>
+                <el-divider></el-divider>
+                <el-form-item label="任务列表">
+                    <el-select v-model="taskstatus" placeholder="请选择任务状态">
+                        <el-option v-for="item in options5" :key="item.value" :label="item.label" :value="item.value">
+                        </el-option>
+                    </el-select>
+                    <el-select v-model="taskproperty" placeholder="请选择任务性质">
+                        <el-option v-for="item in options4" :key="item.value" :label="item.label" :value="item.value">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+
+            </el-form>
+            <!-- 任务列表 -->
+            <!-- 需修改 -->
+            <el-table :data="tableData" height="700" style="width: 100%;" @cell-dblclick="opentaskDetails">
+                <el-table-column label="任务Id" prop="id" class="td-id" width="150">
+                </el-table-column>
+                <el-table-column label="任务性质" prop="name" width="100">
+                </el-table-column>
+                <el-table-column label="主管Id" prop="principal" width="150">
+                </el-table-column>
+                <el-table-column label="员工Id" prop="customer" width="150">
+                </el-table-column>
+                <el-table-column label="任务状态" prop="status" width="100">
+                </el-table-column>
+                <el-table-column>
+                    <template slot="header" slot-scope="scope">
+                        <div style="width: 50%; height: 50px;margin-right: 1px;">
+                            <el-input v-model="search_name" size="mini" placeholder="输入主管Id搜索" @input="query()" />
+                        </div>
+                        <div style="width: 50%; height: 50px;">
+                            <el-input v-model="search_phone" size="mini" placeholder="输入员工Id搜索" @input="query()" />
+                        </div>
+                    </template>
+
+                    <template slot-scope="scope">
+                        <el-button @click="handleEdit(scope.$index, scope.row)">edit</el-button>
+                        <el-button type="danger" @click="handleDelete(scope.$index, scope.row)">
+                            delete</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+
+        </el-dialog>
+
+        <!-- 任务详细信息 -->
+        <!-- 需修改 -->
+        <el-dialog title="项目详细信息" :visible.sync="dialogVisible3" id="dialog4">
+
+            <el-form ref="form" :model="temp" label-width="100px">
+
+                <el-form-item label="项目名称">
+                    <el-input v-model="temp.name" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="项目负责人">
+                    <el-input v-model="temp.principal" :disabled="true"></el-input>
+
+                </el-form-item>
+                <el-form-item label="客户负责人">
+                    <el-input v-model="temp.customer" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="开始时间">
+                    <el-col :span="11">
+                        <el-date-picker :disabled="true" type="date" placeholder="选择日期" v-model="temp.date1"
+                            style="width: 100%;">
+                        </el-date-picker>
+                    </el-col>
+                    <el-col class="line" :span="2">-</el-col>
+                    <el-col :span="11">
+                        <el-time-picker :disabled="true" placeholder="选择时间" v-model="temp.date2" style="width: 100%;">
+                        </el-time-picker>
+                    </el-col>
+                </el-form-item>
+                <el-form-item label="项目报价">
+                    <el-input v-model="temp.price" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="项目状态">
+                    <el-input v-model="temp.status" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="项目进度">
+                    <el-progress :text-inside="true" :stroke-width="26" :percentage="70" style="line-height: 40px;">
+                    </el-progress>
+                </el-form-item>
+                <el-divider></el-divider>
+
+
+            </el-form>
+            <!-- 任务列表 -->
+
+
+        </el-dialog>
+
+        <!-- 回到顶部工具栏 -->
+        <div class="to-top">
+            <a href="#">
+                <i class="el-icon-top" title="回到顶部"></i>
+            </a>
+            <a href="./home.html">
+                <i class="el-icon-user" title="个人资料"></i>
+            </a>
+        </div>
+
+
+    </div>
+
+    <script>
+
+        var app = new Vue({
+            el: "#app",
+            data() {
+                return {
+                    username: getCookie('user'),
+                    src: "../img/mdb-favicon.ico",
+                    tableData: [{
+                        id: '1',
+                        name: '扫黄打黑',
+                        principal: '彭海丽',
+                        customer: "范美浩",
+                        status: '未完成',
+                        date1: '1',
+                        date2: '2'
+                    }, {
+                        id: '1',
+                        name: 'pornhub',
+                        principal: '彭海丽',
+                        customer: "范美浩",
+                        status: '未完成'
+                    }, {
+                        id: '1',
+                        name: '扫黄打黑',
+                        principal: '彭海丽',
+                        customer: "范美浩",
+                        status: '未完成'
+                    }, {
+                        id: '1',
+                        name: '扫黄打黑',
+                        principal: '彭海丽',
+                        customer: "范美浩",
+                        status: '未完成'
+                    }, {
+                        id: '1',
+                        name: '扫黄打黑',
+                        principal: '彭海丽',
+                        customer: "范美浩",
+                        status: '未完成'
+                    }, {
+                        id: '1',
+                        name: '扫黄打黑',
+                        principal: '彭海丽',
+                        customer: "范美浩",
+                        status: '未完成'
+                    }, {
+                        id: '1',
+                        name: '扫黄打黑',
+                        principal: '彭海丽',
+                        customer: "范美浩",
+                        status: '未完成'
+                    }, {
+                        id: '1',
+                        name: '扫黄打黑',
+                        principal: '彭海丽',
+                        customer: "范美浩",
+                        status: '未完成'
+                    }],
+                    //tabledata的备份
+                    tableData1: [{
+                        id: '1',
+                        name: '扫黄打黑',
+                        principal: '彭海丽',
+                        customer: "范美浩",
+                        status: '未完成'
+                    }, {
+                        id: '1',
+                        name: '扫黄打黑',
+                        principal: '彭海丽',
+                        customer: "范美浩",
+                        status: '未完成'
+                    }, {
+                        id: '1',
+                        name: '扫黄打黑',
+                        principal: '彭海丽',
+                        customer: "范美浩",
+                        status: '未完成'
+                    }, {
+                        id: '1',
+                        name: '扫黄打黑',
+                        principal: '彭海丽',
+                        customer: "范美浩",
+                        status: '未完成'
+                    }, {
+                        id: '1',
+                        name: '扫黄打黑',
+                        principal: '彭海丽',
+                        customer: "范美浩",
+                        status: '未完成'
+                    }, {
+                        id: '1',
+                        name: '扫黄打黑',
+                        principal: '彭海丽',
+                        customer: "范美浩",
+                        status: '未完成'
+                    }, {
+                        id: '1',
+                        name: '扫黄打黑',
+                        principal: '彭海丽',
+                        customer: "范美浩",
+                        status: '未完成'
+                    }, {
+                        id: '1',
+                        name: '扫黄打黑',
+                        principal: '彭海丽',
+                        customer: "范美浩",
+                        status: '未完成'
+                    }],
+                    search_name: '',
+                    search_phone: '',
+                    innertitle: '项目列表',
+                    dialogVisible: false,
+                    dialogVisible1: false,
+                    dialogVisible2: false,
+                    dialogVisible3: false,
+                    form: {
+                        name: '',
+                        date1: '',
+                        date2: '',
+                        principal: '',
+                        customer: '',
+                        price: ''
+                    },
+                    //项目负责人下拉列表
+                    options1: [{
+                        value: '选项1',
+                        label: '黄金糕'
+                    }, {
+                        value: '选项2',
+                        label: '双皮奶'
+                    }, {
+                        value: '选项3',
+                        label: '蚵仔煎'
+                    }, {
+                        value: '选项4',
+                        label: '龙须面'
+                    }, {
+                        value: '选项5',
+                        label: '北京烤鸭'
+                    }],
+                    //客户负责人下拉列表
+                    options2: [{
+                        value: '选项1',
+                        label: '黄金糕'
+                    }, {
+                        value: '选项2',
+                        label: '双皮奶'
+                    }, {
+                        value: '选项3',
+                        label: '蚵仔煎'
+                    }, {
+                        value: '选项4',
+                        label: '龙须面'
+                    }, {
+                        value: '选项5',
+                        label: '北京烤鸭'
+                    }],
+                    // 分配任务员工下拉列表
+                    options3: [{
+                        value: '选项1',
+                        label: '黄金糕'
+                    }, {
+                        value: '选项2',
+                        label: '双皮奶'
+                    }, {
+                        value: '选项3',
+                        label: '蚵仔煎'
+                    }, {
+                        value: '选项4',
+                        label: '龙须面'
+                    }, {
+                        value: '选项5',
+                        label: '北京烤鸭'
+                    }],
+                    //分配任务表单
+                    form1: {
+                        task_content: '',
+                        begin_date1: '',
+                        begin_date2: '',
+                        end_date1: '',
+                        end_date2: '',
+                        staff: '',
+
+                    },
+                    temp: '',//临时存放选取的项目的信息
+
+                    // 查看任务栏变量
+                    taskstatus: '',
+                    taskproperty: '',
+                    // 任务性质列表
+                    options4: [{
+                        value: '建模',
+                        label: '建模任务'
+                    }, {
+                        value: '渲染',
+                        label: '渲染任务'
+                    }, {
+                        value: '后期',
+                        label: '后期任务'
+                    },],
+                    // 任务状态列表
+                    options5: [{
+                        value: '已完成',
+                        label: '已完成'
+                    }, {
+                        value: '执行中',
+                        label: '执行中'
+                    }, {
+                        value: '未开始',
+                        label: '未开始'
+                    }, {
+                        value: '审核中',
+                        label: '审核中'
+                    },],
+
+
+                };
+            },
+            methods: {
+                //列表数据搜索
+                query() {
+                    this.tableData = []
+                    if (this.search_name != '' && this.search_phone != '') {
+                        for (let i in this.tableData1) {
+                            if (this.tableData1[i].name.indexOf(this.search_name) != -1 && this.tableData1[i].phone.indexOf(this.search_phone) != -1) {
+                                this.tableData.push(this.tableData1[i])
+                            }
+                        }
+                    }
+                    else if (this.search_name != '' && this.search_phone == '') {
+                        for (let i in this.tableData1) {
+                            if (this.tableData1[i].name.indexOf(this.search_name) != -1) {
+                                this.tableData.push(this.tableData1[i])
+                            }
+                        }
+                    }
+                    else if (this.search_name == '' && this.search_phone != '') {
+                        for (let i in this.tableData1) {
+                            if (this.tableData1[i].phone.indexOf(this.search_phone) != -1) {
+                                this.tableData.push(this.tableData1[i])
+                            }
+                        }
+                    }
+                    else {
+                        this.tableData = this.tableData1
+                    }
+
+                },
+                handleClose(done) {
+                    this.$confirm('确认关闭？')
+                        .then(_ => {
+                            done();
+                            this.form=""
+                            this.form1=""
+                        })
+                        .catch(_ => { });
+                },
+                exit: function () {
+                    delCookie('user')
+                    delCookie('password')
+                    window.location.href = '../index.html'
+                },
+                handletask(index, row) {
+                    console.log(index, row);
+                    this.dialogVisible1 = true
+                },
+                handleEdit(index, row) {
+                    console.log(index, row);
+                    this.dialogVisible = true
+                    this.form = row
+                },
+                handleDelete(index, row) {
+                    console.log(index, row);
+                    // console.log(row.email)
+                    // row和index是键值对
+                    // console.log(row)
+                },
+                changetoList() {
+                    // 修改左侧导航栏的样式
+                    document.getElementById("c-list").style.backgroundColor = '#fafafa'
+                    document.getElementById("c-new").style.backgroundColor = '#fafafa'
+                    document.getElementById("c-new-a").style.color = '#222222'
+                    document.getElementById("c-list-a").style.color = '#222222'
+                    document.getElementById("c-list").style.backgroundColor = '#00a1d7'
+                    document.getElementById("c-list-a").style.color = 'white'
+                    // 修改顶部title内容
+                    this.innertitle = '项目列表'
+                    document.getElementById("content1").style.display = 'block'
+                    document.getElementById("content2").style.display = 'none'
+                },
+                changetoNew() {
+                    document.getElementById("c-list").style.backgroundColor = '#fafafa'
+                    document.getElementById("c-new").style.backgroundColor = '#fafafa'
+                    document.getElementById("c-new-a").style.color = '#222222'
+                    document.getElementById("c-list-a").style.color = '#222222'
+                    document.getElementById("c-new").style.backgroundColor = '#00a1d7'
+                    document.getElementById("c-new-a").style.color = 'white'
+                    this.innertitle = '新建项目'
+                    document.getElementById("content1").style.display = 'none'
+                    document.getElementById("content2").style.display = 'block'
+                },
+                // 打开项目详细弹出框
+                openDetails(row, column, event) {
+                    console.log(row)
+                    this.temp = row
+                    this.dialogVisible2 = true
+                },
+                // 打开任务详细弹出框
+                opentaskDetails(row, column, event) {
+                    console.log(row)
+                    this.temp = row
+                    this.dialogVisible3 = true
+                }
+
+            }
+
+        })
+    </script>
+
+
+</body>
+
+</html>

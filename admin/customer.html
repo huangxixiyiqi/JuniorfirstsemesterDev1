@@ -1,0 +1,444 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-12-10 19:27:05
+ * @LastEditTime: 2021-12-17 11:08:21
+ * @LastEditors: Please set LastEditors
+ * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ * @FilePath: \FrontEndcode\admin\home.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrator</title>
+    <!-- 重置样式表 -->
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/normalize.css">
+    <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- <script src="//unpkg.com/vue/dist/vue.js"></script> -->
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui@2.15.7/lib/theme-chalk/index.css">
+    <!-- <link rel="stylesheet" href="../css/index.css"> -->
+
+    <!-- 引入组件库 -->
+    <!-- <script src="https://unpkg.com/element-ui/lib/index.js"></script> -->
+    <script src="../js/index.js"></script>
+    <!-- <script src="//unpkg.com/element-ui@2.15.7/lib/index.js"></script> -->
+
+
+    <!-- 引入axios -->
+    <!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script> -->
+    <script src="../js/axios.min.js"></script>
+    <!-- MDB icon -->
+    <link rel="icon" href="../img/mdb-favicon.ico" type="image/x-icon">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <!-- Material Design Bootstrap -->
+    <link rel="stylesheet" href="../css/mdb.min.css">
+    <!-- Your custom styles (optional) -->
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="./style.css">
+    <!-- jQuery -->
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <!-- Bootstrap tooltips -->
+    <script type="text/javascript" src="../js/popper.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="../js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript" src="../js/mdb.min.js"></script>
+    <!-- Your custom scripts (optional) -->
+    <script type="text/javascript"></script>
+    <script type="text/javascript" src="../js/deletecookie.js"></script>
+    <!-- 基础样式 -->
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="./css/customer.css">
+    <script src="../global.js"></script>
+
+</head>
+
+<body>
+
+
+    <div id="app">
+        <header>
+            <!--Navbar-->
+            <nav class="navbar navbar-expand-md navbar-dark nav-color ">
+                <div class="container">
+                    <!-- Navbar brand -->
+                    <a class="navbar-brand" href="./admin.html">Administrator</a>
+                    <!-- Collapse button -->
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav"
+                        aria-controls="basicExampleNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <!-- Collapsible content -->
+                    <div class="collapse navbar-collapse" id="basicExampleNav">
+                        <!-- Links -->
+                        <ul class="navbar-nav mr-auto">
+                            <li class="nav-item active">
+                                <a class="nav-link" href="./admin.html">Home
+                                    <span class="sr-only">(current)</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="project.html">项目管理</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="./staffinfo.html">员工管理</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">计算工资</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">设置账号权限</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="./customer.html">客户管理</a>
+                            </li>
+                            <!-- Dropdown
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">客户管理</a>
+                                <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
+                                    <a class="dropdown-item" href="#">客户信息建立</a>
+                                    <a class="dropdown-item" href="#">客户信息删除</a>
+                                    <a class="dropdown-item" href="#">客户信息修改</a>
+                                    <a class="dropdown-item" href="#">客户信息查询</a>
+                                </div>
+                            </li> -->
+                        </ul>
+                        <!-- Links -->
+
+                    </div>
+
+                    <!-- Collapsible content -->
+                </div>
+                <!-- 用户栏 -->
+                <div>
+                    <el-dropdown>
+                        <span class="el-dropdown-link" id="user">
+                            {{username}}
+                        </span>
+                        <el-dropdown-menu slot="dropdown">
+                            <el-dropdown-item divided>
+                                <a id="personal" href="./home.html"><i class="el-icon-user"></i>个人资料</a>
+                            </el-dropdown-item>
+                            <el-dropdown-item divided>
+                                <div @click="exit">
+                                    <i class="el-icon-circle-close"></i>
+                                    <span>退出</span>
+                                </div>
+                            </el-dropdown-item>
+                        </el-dropdown-menu>
+                    </el-dropdown>
+                </div>
+            </nav>
+            <!--/.Navbar-->
+        </header>
+
+        <div class="card-wrapper  clearfix">
+            <div class="left-nav">
+                <div class="title">
+                    <span>客户中心</span>
+                </div>
+                <div class="left-item " id="c-list" @click="changetoList()">
+                    <a id="c-list-a"><i class="el-icon-user-solid"></i> 客户列表</a>
+                </div>
+                <div class="left-item " id="c-new" @click="changetoNew()">
+                    <a id="c-new-a"><i class="el-icon-circle-plus"></i> 新建客户</a>
+                </div>
+            </div>
+            <div class="inner">
+                <div class="top">
+                    <span>| {{innertitle}}</span>
+                </div>
+                <div class="content">
+                    <!-- 客户列表 -->
+                    <el-table :data="tableData" height="900" style="width: 100%;" id="content1">
+                        <el-table-column label="Id" prop="id" class="td-id" width="100">
+                        </el-table-column>
+                        <el-table-column label="姓名" prop="name" width="100">
+                        </el-table-column>
+                        <el-table-column label="手机号码" prop="phone" width="200">
+                        </el-table-column>
+                        <el-table-column label="QQ" prop="qq" width="200">
+                        </el-table-column>
+                        <el-table-column label="E-mail" prop="email" width="300">
+                        </el-table-column>
+                        <el-table-column>
+                            <template slot="header" slot-scope="scope">
+                                <div style="width: 50%; height: 50px;margin-right: 1px;">
+                                    <el-input v-model="search_name" size="mini" placeholder="输入名字搜索" @input="query()" />
+                                </div>
+                                <div style="width: 50%; height: 50px;">
+                                    <el-input v-model="search_phone" size="mini" placeholder="输入手机号码搜索"
+                                        @input="query()" />
+                                </div>
+                            </template>
+
+                            <template slot-scope="scope">
+                                <el-button @click="handleEdit(scope.$index, scope.row)">Edit</el-button>
+                                <el-button type="danger" @click="handleDelete(scope.$index, scope.row)">
+                                    Delete</el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                    <!-- 新建客户 -->
+                    <el-form ref="form" :model="form" label-width="80px" id="content2">
+                        <el-form-item label="姓名：">
+                            <el-input v-model="form.name"></el-input>
+                        </el-form-item>
+                        <el-form-item label="手机号：">
+                            <el-input type="text" v-model="form.phone"></el-input>
+                        </el-form-item>
+                        <el-form-item label="QQ：">
+                            <el-input v-model="form.qq"></el-input>
+                        </el-form-item>
+                        <el-form-item label="E-mail：">
+                            <el-input type="text" v-model="form.email"></el-input>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button class="savebtn" type="primary" @click="onSubmit">创建</el-button>
+                        </el-form-item>
+                    </el-form>
+                </div>
+
+            </div>
+        </div>
+        <!-- 修改客户对话框 -->
+        <el-dialog title="修改客户信息" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
+            <el-form ref="form" :model="form" label-width="80px" >
+                <el-form-item label="姓名：">
+                    <el-input v-model="form.name"></el-input>
+                </el-form-item>
+                <el-form-item label="手机号：">
+                    <el-input type="text" v-model="form.phone"></el-input>
+                </el-form-item>
+                <el-form-item label="QQ：">
+                    <el-input v-model="form.qq"></el-input>
+                </el-form-item>
+                <el-form-item label="E-mail：">
+                    <el-input type="text" v-model="form.email"></el-input>
+                </el-form-item>
+                
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible = false">取 消</el-button>
+                <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+            </span>
+        </el-dialog>
+
+        <!-- 回到顶部工具栏 -->
+        <div class="to-top">
+            <a href="#">
+                <i class="el-icon-top" title="回到顶部"></i>
+            </a>
+            <a href="./home.html">
+                <i class="el-icon-user" title="个人资料"></i>
+            </a>
+        </div>
+
+    </div>
+
+    <script>
+
+        var app = new Vue({
+            el: "#app",
+            data() {
+                return {
+                    username: getCookie('user'),
+                    src: "../img/mdb-favicon.ico",
+                    tableData: [{
+                        id: '1',
+                        name: '王小虎',
+                        phone: '123431321327',
+                        qq: "23234",
+                        email: '1231212@qq.com'
+                    }, {
+                        id: '1',
+                        name: '彭海丽',
+                        phone: '123456',
+                        qq: "23234",
+                        email: '1232@qq.com'
+                    }, {
+                        id: '1',
+                        name: '王小虎',
+                        phone: '123456',
+                        qq: "23234",
+                        email: '1232@qq.com'
+                    }, {
+                        id: '1',
+                        name: '王小虎',
+                        phone: '123456',
+                        qq: "23234",
+                        email: '1232@qq.com'
+                    }, {
+                        id: '1',
+                        name: '王小虎',
+                        phone: '123456',
+                        qq: "23234",
+                        email: '1232@qq.com'
+                    }, {
+                        id: '1',
+                        name: '王小虎',
+                        phone: '123456',
+                        qq: "23234",
+                        email: '1232@qq.com'
+                    }, {
+                        id: '1',
+                        name: '王小虎',
+                        phone: '123456',
+                        qq: "23234",
+                        email: '1232@qq.com'
+                    }],
+                    //tabledata的备份
+                    tableData1: [{
+                        id: '1',
+                        name: '王小虎',
+                        phone: '123431321327',
+                        qq: "23234",
+                        email: '1231212@qq.com'
+                    }, {
+                        id: '1',
+                        name: '彭海丽',
+                        phone: '123456',
+                        qq: "23234",
+                        email: '1232@qq.com'
+                    }, {
+                        id: '1',
+                        name: '王小虎',
+                        phone: '123456',
+                        qq: "23234",
+                        email: '1232@qq.com'
+                    }, {
+                        id: '1',
+                        name: '王小虎',
+                        phone: '123456',
+                        qq: "23234",
+                        email: '1232@qq.com'
+                    }, {
+                        id: '1',
+                        name: '王小虎',
+                        phone: '123456',
+                        qq: "23234",
+                        email: '1232@qq.com'
+                    }, {
+                        id: '1',
+                        name: '王小虎',
+                        phone: '123456',
+                        qq: "23234",
+                        email: '1232@qq.com'
+                    }, {
+                        id: '1',
+                        name: '王小虎',
+                        phone: '123456',
+                        qq: "23234",
+                        email: '1232@qq.com'
+                    }],
+                    search_name: '',
+                    search_phone: '',
+                    innertitle: '客户列表',
+                    form: {
+                        name: '',
+                        qq: '',
+                        phone: '',
+                        email: ''
+                    },
+                    dialogVisible: false
+
+                };
+            },
+            methods: {
+                //列表数据搜索
+                query() {
+                    this.tableData = []
+                    if (this.search_name != '' && this.search_phone != '') {
+                        for (let i in this.tableData1) {
+                            if (this.tableData1[i].name.indexOf(this.search_name) != -1 && this.tableData1[i].phone.indexOf(this.search_phone) != -1) {
+                                this.tableData.push(this.tableData1[i])
+                            }
+                        }
+                    }
+                    else if (this.search_name != '' && this.search_phone == '') {
+                        for (let i in this.tableData1) {
+                            if (this.tableData1[i].name.indexOf(this.search_name) != -1) {
+                                this.tableData.push(this.tableData1[i])
+                            }
+                        }
+                    }
+                    else if (this.search_name == '' && this.search_phone != '') {
+                        for (let i in this.tableData1) {
+                            if (this.tableData1[i].phone.indexOf(this.search_phone) != -1) {
+                                this.tableData.push(this.tableData1[i])
+                            }
+                        }
+                    }
+                    else {
+                        this.tableData = this.tableData1
+                    }
+
+                },
+                handleClose(done) {
+                    this.$confirm('确认关闭？')
+                        .then(_ => {
+                            done();
+                        })
+                        .catch(_ => { });
+                },
+                exit: function () {
+                    delCookie('user')
+                    delCookie('password')
+                    window.location.href = '../index.html'
+                },
+                handleEdit(index, row) {
+                    console.log(index, row);
+                    this.dialogVisible = true
+                },
+                handleDelete(index, row) {
+                    console.log(index, row);
+                    // console.log(row.email)
+                    // row和index是键值对
+                    // console.log(row)
+                },
+                changetoList() {
+                    // 修改左侧导航栏的样式
+                    document.getElementById("c-list").style.backgroundColor = '#fafafa'
+                    document.getElementById("c-new").style.backgroundColor = '#fafafa'
+                    document.getElementById("c-new-a").style.color = '#222222'
+                    document.getElementById("c-list-a").style.color = '#222222'
+                    document.getElementById("c-list").style.backgroundColor = '#00a1d7'
+                    document.getElementById("c-list-a").style.color = 'white'
+                    // 修改顶部title内容
+                    this.innertitle = '客户列表'
+                    document.getElementById("content1").style.display = 'block'
+                    document.getElementById("content2").style.display = 'none'
+                },
+                changetoNew() {
+                    document.getElementById("c-list").style.backgroundColor = '#fafafa'
+                    document.getElementById("c-new").style.backgroundColor = '#fafafa'
+                    document.getElementById("c-new-a").style.color = '#222222'
+                    document.getElementById("c-list-a").style.color = '#222222'
+                    document.getElementById("c-new").style.backgroundColor = '#00a1d7'
+                    document.getElementById("c-new-a").style.color = 'white'
+                    this.innertitle = '新建客户'
+                    document.getElementById("content1").style.display = 'none'
+                    document.getElementById("content2").style.display = 'block'
+                }
+
+
+            }
+
+        })
+    </script>
+
+
+</body>
+
+</html>
