@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-12-18 19:50:26
- * @LastEditTime: 2021-12-18 20:25:39
+ * @LastEditTime: 2021-12-23 10:17:34
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \FrontEndcode\staff\task.html
@@ -85,23 +85,13 @@
                                     <span class="sr-only">(current)</span>
                                 </a>
                             </li>
-                            <!-- Dropdown -->
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
-                                    aria-haspopup="true" aria-expanded="false">项目</a>
-                                <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
-                                    <a class="dropdown-item" href="#">查看项目信息</a>
-                                    <a class="dropdown-item" href="#">查看项目进度</a>
-                                    <a class="dropdown-item" href="#">查看项目文件</a>
-
-                                </div>
+                            <li class="nav-item">
+                                <a class="nav-link" href="./project.html">项目</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#">查询客户信息</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">修改意见</a>
-                            </li>
+
                         </ul>
                         <!-- Links -->
 
@@ -164,19 +154,19 @@
                 <div class="content">
                     <!-- 新任务列表 -->
                     <el-tooltip class="item" effect="dark" content="双击左键查看任务详细信息" placement="top-start">
-                        <el-table :data="tableData" height="900" style="width: 100%;" id="content1"
+                        <el-table :data="task_data1" height="900" style="width: 100%;" id="content1" empty-text="当前无新任务"
                             @cell-dblclick="openDetails">
-                            <el-table-column label="任务Id" prop="id" class="td-id" width="150">
+                            <el-table-column label="任务Id" prop="task_id" class="td-id" width="150">
                             </el-table-column>
-                            <el-table-column label="任务性质" prop="name" width="150">
+                            <el-table-column label="任务性质" prop="task_property" width="150">
                             </el-table-column>
-                            <el-table-column label="主管Id" prop="principal" width="150">
+                            <el-table-column label="主管Id" prop="manager_id" width="100">
                             </el-table-column>
-                            <el-table-column label="员工Id" prop="customer" width="150">
+                            <el-table-column label="员工Id" prop="staff_id" width="100">
                             </el-table-column>
-                            <el-table-column label="任务状态" prop="status" width="150">
+                            <el-table-column label="结束时间" prop="task_distribution_end_time" width="250">
                             </el-table-column>
-                            <el-table-column label="任务接受" prop="status" width="150">
+                            <el-table-column label="任务接受" prop="task_distribution_is_accepted" width="150">
                             </el-table-column>
                             <el-table-column>
                                 <template slot="header" slot-scope="scope">
@@ -185,8 +175,8 @@
 
                                 <template slot-scope="scope">
                                     <el-button @click="handleEdit(scope.$index, scope.row)">接受</el-button>
-                                    <el-button type="danger" @click="handleDelete(scope.$index, scope.row)">
-                                        拒绝</el-button>
+                                    <el-button type="danger" @click="handleDelete(scope.$index, scope.row)">拒绝
+                                    </el-button>
                                 </template>
                             </el-table-column>
                         </el-table>
@@ -194,19 +184,19 @@
 
                     <!-- 已接任务列表 -->
                     <el-tooltip class="item" effect="dark" content="双击左键查看任务详细信息" placement="top-start">
-                        <el-table :data="tableData" height="900" style="width: 100%;" id="content2"
+                        <el-table :data="task_data2" height="900" style="width: 100%;" id="content2"
                             @cell-dblclick="openDetails">
-                            <el-table-column label="任务Id" prop="id" class="td-id" width="150">
+                            <el-table-column label="任务Id" prop="task_id" class="td-id" width="150">
                             </el-table-column>
-                            <el-table-column label="任务性质" prop="name" width="150">
+                            <el-table-column label="任务性质" prop="task_property" width="150">
                             </el-table-column>
-                            <el-table-column label="主管Id" prop="principal" width="150">
+                            <el-table-column label="主管Id" prop="manager_id" width="100">
                             </el-table-column>
-                            <el-table-column label="员工Id" prop="customer" width="150">
+                            <el-table-column label="员工Id" prop="staff_id" width="100">
                             </el-table-column>
-                            <el-table-column label="任务状态" prop="status" width="150">
+                            <el-table-column label="结束时间" prop="task_distribution_end_time" width="250">
                             </el-table-column>
-                            <el-table-column label="任务接受" prop="status" width="150">
+                            <el-table-column label="任务接受" prop="task_distribution_is_accepted" width="150">
                             </el-table-column>
                             <el-table-column>
                                 <template slot="header" slot-scope="scope">
@@ -214,9 +204,8 @@
                                 </template>
 
                                 <template slot-scope="scope">
-                                    <el-button @click="handleEdit(scope.$index, scope.row)">接受</el-button>
-                                    <el-button type="danger" @click="handleDelete(scope.$index, scope.row)">
-                                        拒绝</el-button>
+                                    <el-button @click="handlefinish(scope.$index, scope.row)">完成</el-button>
+                                    <el-button @click="handle(scope.$index, scope.row)">项目资料</el-button>
                                 </template>
                             </el-table-column>
                         </el-table>
@@ -229,56 +218,37 @@
         </div>
 
         <!-- 任務详细信息 -->
-        <!-- 需修改 -->
+
         <el-dialog title="任务详细信息" :visible.sync="dialogVisible2" id="dialog3">
 
-            <el-form ref="temp" :model="temp" label-width="100px">
+            <el-form ref="temp_task" :model="temp_task" label-width="100px">
 
-                <el-form-item label="项目Id">
-                    <el-input v-model="temp.name" :disabled="true"></el-input>
+                <el-form-item label="任务Id">
+                    <el-input v-model="temp_task.task_id" :disabled="true"></el-input>
                 </el-form-item>
                 <el-form-item label="主管Id">
-                    <el-input v-model="temp.principal" :disabled="true"></el-input>
-
+                    <el-input v-model="temp_task.manager_id" :disabled="true"></el-input>
                 </el-form-item>
                 <el-form-item label="员工Id">
-                    <el-input  v-model="temp.customer" :disabled="true"></el-input>
+                    <el-input v-model="temp_task.staff_id" :disabled="true"></el-input>
                 </el-form-item>
-                <el-form-item label="任务描述">
-                    <el-input type="textarea" v-model="temp.customer" :disabled="true"></el-input>
+                <el-form-item label="任务性质">
+                    <el-input v-model="temp_task.task_property" :disabled="true"></el-input>
                 </el-form-item>
-                <el-form-item label="任务开始时间">
-                    <el-col :span="11">
-                        <el-date-picker :disabled="true" type="date" placeholder="选择日期" v-model="temp.date1"
-                            style="width: 100%;">
-                        </el-date-picker>
-                    </el-col>
-                    <el-col class="line" :span="2">-</el-col>
-                    <el-col :span="11">
-                        <el-time-picker :disabled="true" placeholder="选择时间" v-model="temp.date2" style="width: 100%;">
-                        </el-time-picker>
-                    </el-col>
+                <el-form-item label="任务接受">
+                    <el-input v-model="temp_task.task_distribution_is_accepted" :disabled="true"></el-input>
                 </el-form-item>
-                <el-form-item label="任务结束时间">
-                    <el-col :span="11">
-                        <el-date-picker :disabled="true" type="date" placeholder="选择日期" v-model="temp.date1"
-                            style="width: 100%;">
-                        </el-date-picker>
-                    </el-col>
-                    <el-col class="line" :span="2">-</el-col>
-                    <el-col :span="11">
-                        <el-time-picker :disabled="true" placeholder="选择时间" v-model="temp.date2" style="width: 100%;">
-                        </el-time-picker>
-                    </el-col>
+                <el-form-item label="任务信息">
+                    <el-input v-model="temp_task.task_info" :disabled="true" :autosize="{ minRows: 2, maxRows: 4}">
+                    </el-input>
                 </el-form-item>
-                <el-form-item label="任务进度">
-                    <el-input v-model="temp.price" :disabled="true"></el-input>
+                <el-form-item label="开始时间">
+                    <el-input :disabled="true" v-model="temp_task.task_distribution_begin_time" style="width: 100%;">
+                    </el-input>
                 </el-form-item>
-                <el-form-item label="任务状态">
-                    <el-input v-model="temp.status" :disabled="true"></el-input>
-                </el-form-item>
-                <el-form-item label="任务是否接受">
-                    <el-input v-model="temp.status" :disabled="true"></el-input>
+                <el-form-item label="结束时间">
+                    <el-input :disabled="true" v-model="temp_task.task_distribution_end_time" style="width: 100%;">
+                    </el-input>
                 </el-form-item>
                 <el-divider></el-divider>
 
@@ -309,83 +279,101 @@
             el: "#app",
             created() {
                 //合并时，读取账号信息，如果该账号是员工，则不显示切换按钮，是主管则显示
-                trans.style.display = "block"
+                var s = ''
+                s = getCookie('job')
+                if (s.indexOf('主管') != -1) {
+                    trans.style.display = "block"
+                }
+                else {
+                    trans.style.display = "none"
+                }
+                axios.get(port + 'task/get_staff_task/' + getCookie('staff_id')).then(res => {
+                    console.log(res.data)
+                    if (res.data.msg == 'ok') {
+                        this.notice = true
+                    } else {
+                        this.notice = false
+                    }
+                    data = res.data.data
+                    for (let i in data) {
+                        this.task_data1.push({
+                            task_distribution_is_accepted: data[i].task_distribution_is_accepted,
+                            task_distribution_begin_time: data[i].task_distribution_begin_time,
+                            task_distribution_end_time: data[i].task_distribution_end_time,
+                            task_info: data[i].task_info,
+                            project_id: data[i].project_id,
+                            staff_id: data[i].staff_id,
+                            manager_id: data[i].manager_id,
+                            task_property: data[i].task_property,
+                            task_id: data[i].task_id,
+                            task_distribution_id: data[i].task_distribution_id,
+                        })
+
+                    }
+                })
+                axios.get(port + 'task/get_staff_task_accepted/' + getCookie('staff_id')).then(res => {
+                    data = res.data.data
+                    for (let i in data) {
+                        this.task_data2.push({
+                            task_distribution_is_accepted: data[i].task_distribution_is_accepted,
+                            task_distribution_begin_time: data[i].task_distribution_begin_time,
+                            task_distribution_end_time: data[i].task_distribution_end_time,
+                            task_info: data[i].task_info,
+                            project_id: data[i].project_id,
+                            staff_id: data[i].staff_id,
+                            manager_id: data[i].manager_id,
+                            task_property: data[i].task_property,
+                            task_id: data[i].task_id,
+                            task_distribution_id: data[i].task_distribution_id,
+                        })
+
+                    }
+                })
+
             },
             data() {
                 return {
-                    username: getCookie('user'),
+                    username: getCookie('name'),
                     src: "../img/mdb-favicon.ico",
-                    notice: true,  //true则显示红点，false不显示红点
+                    notice: false,  //true则显示红点，false不显示红点
                     innertitle: '新的任务',
                     dialogVisible2: false,
-                    tableData: [{
-                        id: '1',
-                        name: '扫黄打黑',
-                        principal: '彭海丽',
-                        customer: "范美浩",
-                        status: '未完成',
-                        date1: '1',
-                        date2: '2'
-                    }, {
-                        id: '1',
-                        name: 'pornhub',
-                        principal: '彭海丽',
-                        customer: "范美浩",
-                        status: '未完成'
-                    }, {
-                        id: '1',
-                        name: '扫黄打黑',
-                        principal: '彭海丽',
-                        customer: "范美浩",
-                        status: '未完成'
-                    }, {
-                        id: '1',
-                        name: '扫黄打黑',
-                        principal: '彭海丽',
-                        customer: "范美浩",
-                        status: '未完成'
-                    }, {
-                        id: '1',
-                        name: '扫黄打黑',
-                        principal: '彭海丽',
-                        customer: "范美浩",
-                        status: '未完成'
-                    }, {
-                        id: '1',
-                        name: '扫黄打黑',
-                        principal: '彭海丽',
-                        customer: "范美浩",
-                        status: '未完成'
-                    }, {
-                        id: '1',
-                        name: '扫黄打黑',
-                        principal: '彭海丽',
-                        customer: "范美浩",
-                        status: '未完成'
-                    }, {
-                        id: '1',
-                        name: '扫黄打黑',
-                        principal: '彭海丽',
-                        customer: "范美浩",
-                        status: '未完成'
-                    }],
-                    temp: {
-                        name: '',
-                        date1: '',
-                        date2: '',
-                        principal: '',
-                        customer: '',
-                        price: ''
-                    },
+                    task_data1: [],
+                    task_data2: [],
+                    temp_task: [],
 
                 };
 
 
             },
+            mounted() {
+                if (this.timer) {
+                    clearInterval(this.timer)
+                } else {
+                    this.timer = setInterval(() => {
+                        // console.log(1)
+                        //获取数据
+                        axios.get(port + 'task/get_staff_task/' + getCookie('staff_id')).then(res => {
+                            console.log(res.data)
+                            if (res.data.msg == 'ok') {
+                                this.notice = true
+                            } else {
+                                this.notice = false
+                            }
+                        })
+                    }, 30000)
+                }
+
+            },
+
             methods: {
                 exit: function () {
                     delCookie('user')
                     delCookie('password')
+                    delCookie('name')
+                    delCookie('job')
+                    delCookie('department')
+                    delCookie('phone')
                     window.location.href = '../index.html'
                 },
                 changetoList() {
@@ -416,8 +404,89 @@
                 // 打开项目详细弹出框
                 openDetails(row, column, event) {
                     console.log(row)
-                    this.temp = row
+                    this.temp_task = row
                     this.dialogVisible2 = true
+                },
+                // 接受任务
+                handleEdit(index, row) {
+                    console.log(row)
+                    this.$confirm('是否接受任务', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'info'
+                    }).then(() => {
+                        console.log(row.task_distribution_id)
+                        axios.post(port + 'task/modify_task_accepted/' + row.task_distribution_id).then(res => {
+                            console.log(res.data)
+                            if (res.data.status == 200) {
+                                this.$message({
+                                    type: 'success',
+                                    message: '已接受任务!'
+                                });
+                                window.location.href = './task.html'
+                            }
+                        })
+
+                    }).catch(() => {
+                        // this.$message({
+                        //     type: 'info',
+                        //     message: '已取消删除'
+                        // });
+                    });
+                },
+                handleDelete(index, row) {
+                    this.$confirm('是否拒接任务', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        console.log(row.task_distribution_id)
+                        axios.post(port + 'task/modify_task_reject/' + row.task_distribution_id).then(res => {
+                            console.log(res.data)
+                            if (res.data.status == 200) {
+                                this.$message({
+                                    type: 'success',
+                                    message: '已拒接任务!'
+                                });
+                                window.location.href = './task.html'
+                            }
+                        })
+
+                    }).catch(() => {
+                        // this.$message({
+                        //     type: 'info',
+                        //     message: '已取消删除'
+                        // });
+                    });
+                },
+                handlefinish(index, row) {
+                    console.log(row)
+                    this.$confirm('是否已完成任务', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'info'
+                    }).then(() => {
+                        console.log(row.task_distribution_id)
+                        axios.post(port + 'task/modify_task_finished/' + row.task_distribution_id).then(res => {
+                            console.log(res.data)
+                            if (res.data.status == 200) {
+                                this.$message({
+                                    type: 'success',
+                                    message: '已完成任务!'
+                                });
+                                window.location.href = './task.html'
+                            }
+                        })
+
+                    }).catch(() => {
+                        // this.$message({
+                        //     type: 'info',
+                        //     message: '已取消删除'
+                        // });
+                    });
+                },
+                handle(index, row) {
+                    window.open(port)
                 },
             }
 

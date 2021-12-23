@@ -7,8 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Staff</title>
     <!-- 重置样式表 -->
-    <link rel="stylesheet" href="./css/reset.css">
-    <link rel="stylesheet" href="./css/normalize.css">
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/normalize.css">
     <!-- 开发环境版本，包含了有帮助的命令行警告 -->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <!-- <script src="//unpkg.com/vue/dist/vue.js"></script> -->
@@ -51,6 +51,7 @@
     <link rel="stylesheet" href="../css/base.css">
     <script src="../global.js"></script>
     <link rel="stylesheet" href="./css/home.css">
+    <script src="../global.js"></script>
 </head>
 
 <body>
@@ -77,23 +78,13 @@
                                     <span class="sr-only">(current)</span>
                                 </a>
                             </li>
-                            <!-- Dropdown -->
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
-                                    aria-haspopup="true" aria-expanded="false">项目</a>
-                                <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
-                                    <a class="dropdown-item" href="#">查看项目信息</a>
-                                    <a class="dropdown-item" href="#">查看项目进度</a>
-                                    <a class="dropdown-item" href="#">查看项目文件</a>
-
-                                </div>
+                            <li class="nav-item">
+                                <a class="nav-link" href="./project.html">项目</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#">查询客户信息</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">修改意见</a>
-                            </li>
+                            
                         </ul>
                         <!-- Links -->
 
@@ -151,27 +142,31 @@
                     <span>| 我的信息</span>
                 </div>
                 <div class="content">
-                    <el-form  ref="form" :model="form" label-width="80px" style="margin: 0 auto;">
+                    <el-form ref="form" :model="form" label-width="80px" style="margin: 0 auto;">
                         <el-form-item class="e" label="姓名：">
-                            <el-input v-model="form.name" ></el-input>
+                            <el-input v-model="form.name"></el-input>
                         </el-form-item>
-                        <el-form-item  class="e" label="账号：">
-                            <el-input v-model="form.account"></el-input>
+                        <el-form-item class="e" label="账号：">
+                            <el-input v-model="form.account" :disabled="true"></el-input>
                         </el-form-item>
                         <el-form-item label="身份：">
-                            <el-select v-model="form.id" :placeholder="idph">
-                                <el-option label="主管" value="主管"></el-option>
-                                <el-option label="员工" value="员工"></el-option>
+                            <el-select v-model="form.job" :placeholder="idph">
+                                <el-option label="模型主管" value="模型主管"></el-option>
+                                <el-option label="渲染主管" value="渲染主管"></el-option>
+                                <el-option label="后期主管" value="后期主管"></el-option>
+                                <el-option label="模型员工" value="模型员工"></el-option>
+                                <el-option label="渲染员工" value="渲染员工"></el-option>
+                                <el-option label="后期员工" value="后期员工"></el-option>
                                 <el-option label="前台" value="前台"></el-option>
                             </el-select>
-                        </el-form-item>             
+                        </el-form-item>
                         <el-form-item label="部门：">
                             <el-radio-group v-model="form.department">
-                              <el-radio label="线上品牌商赞助"></el-radio>
-                              <el-radio label="线下场地免费"></el-radio>
-                              <el-radio label="线下1场地免费"></el-radio>
+                                <el-radio label="模型"></el-radio>
+                                <el-radio label="渲染"></el-radio>
+                                <el-radio label="后期"></el-radio>
                             </el-radio-group>
-                          </el-form-item>
+                        </el-form-item>
                         <el-form-item class="p" label="手机号：">
                             <el-input type="text" v-model="form.phone"></el-input>
                         </el-form-item>
@@ -204,42 +199,87 @@
             el: "#app",
             created() {
                 //合并时，读取账号信息，如果该账号是员工，则不显示切换按钮，是主管则显示
-                trans.style.display = "block"
+                var s = ''
+                s = getCookie('job')
+                if (s.indexOf('主管') != -1) {
+                    trans.style.display = "block"
+                }
+                else {
+                    trans.style.display = "none"
+                }
+                axios.get(port + 'task/get_staff_task/' + getCookie('staff_id')).then(res => {
+                    console.log(res.data)
+                    if (res.data.msg == 'ok') {
+                        this.notice = true
+                    } else {
+                        this.notice = false
+                    }
+                })
             },
             data() {
                 return {
-                    username: getCookie('user'),
+                    username: getCookie('name'),
                     src: "../img/mdb-favicon.ico",
-                    notice: true,  //true则显示红点，false不显示红点
+                    notice: false,  //true则显示红点，false不显示红点
                     form: {
-                        name: getCookie('user'),
-                        account: getCookie('account'),
-                        id: '',
-                        department: '',
-                        phone: ''
+                        name: getCookie('name'),
+                        account: getCookie('user'),
+                        job: getCookie('job'),
+                        department: getCookie('department'),
+                        phone: getCookie('phone'),
+                        // staff_id:getCookie('staff_id')
                     },
                     idph: '111',
                 };
 
 
             },
+            mounted() {
+                if (this.timer) {
+                    clearInterval(this.timer)
+                } else {
+                    this.timer = setInterval(() => {
+                        // console.log(1)
+                        //获取数据
+                        axios.get(port + 'task/get_staff_task/' + getCookie('staff_id')).then(res => {
+                            console.log(res.data)
+                            if (res.data.msg == 'ok') {
+                                this.notice = true
+                            } else {
+                                this.notice = false
+                            }
+                        })
+                    }, 60000)
+                }
+
+            },
+
             methods: {
-                test: function () {
-                    // axios.get('http://localhost:8080/stock/getbyid/1').then(res => {
-                    //     this.message = res.data['stockname']
-                    //     console.log(res.data)
-
-                    // })
-                    setName("帅哥彭海栗")
-                    this.username = getName()
-
-                    //window.location.href = 'index.html'//跳转
-
-
+                onSubmit: function () {
+                    axios.post(port + 'user/update_staff_info/' + getCookie('staff_id'), this.form).then(res => {
+                        console.log(res.data)
+                        this.$message({
+                            message: '修改成功!',
+                            type: 'success'
+                        });
+                        delCookie('name')
+                        delCookie('job')
+                        delCookie('department')
+                        delCookie('phone')
+                        document.cookie = 'job=' + this.form.job + ';path=/'
+                        document.cookie = 'department=' + this.form.department + ';path=/'
+                        document.cookie = 'name=' + this.form.name + ';path=/'
+                        document.cookie = 'phone=' + this.form.phone + ';path=/'
+                        this.username = this.form.name
+                    })
                 },
                 exit: function () {
                     delCookie('user')
                     delCookie('password')
+                    delCookie('name')
+                    delCookie('job')
+                    delCookie('department')
+                    delCookie('phone')
                     window.location.href = '../index.html'
                 }
 

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-22 17:29:45
- * @LastEditTime: 2021-12-17 11:13:20
+ * @LastEditTime: 2021-12-23 09:56:59
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \MDB-Pro-4.12\admin\index.html
@@ -91,26 +91,14 @@
                                 <a class="nav-link" href="./staffinfo.html">员工管理</a>
                             </li>
 
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">计算工资</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">设置账号权限</a>
-                            </li>
+
+
                             <li class="nav-item">
                                 <a class="nav-link" href="./customer.html">客户管理</a>
                             </li>
-                            <!-- Dropdown
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
-                                    aria-haspopup="true" aria-expanded="false">客户管理</a>
-                                <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
-                                    <a class="dropdown-item" href="#">客户信息建立</a>
-                                    <a class="dropdown-item" href="#">客户信息删除</a>
-                                    <a class="dropdown-item" href="#">客户信息修改</a>
-                                    <a class="dropdown-item" href="#">客户信息查询</a>
-                                </div>
-                            </li> -->
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" @click="dialogVisible5 = true">生成报表</a>
+                            </li>
                         </ul>
                         <!-- Links -->
 
@@ -164,7 +152,20 @@
             <!--/.Mask-->
         </header>
 
-        
+
+
+
+
+        <!-- 生成报表 -->
+        <el-dialog title="生成报表" :visible.sync="dialogVisible5" width="30%">
+            <el-radio v-model="radio2" label="客户报表">客户报表</el-radio>
+            <el-radio v-model="radio2" label="项目报表">项目报表</el-radio>
+            <el-radio v-model="radio2" label="员工报表">员工报表</el-radio>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible5 = false">取 消</el-button>
+                <el-button type="primary" @click="produce">确 定</el-button>
+            </span>
+        </el-dialog>
 
         <!-- 回到顶部工具栏 -->
         <div class="to-top">
@@ -184,8 +185,10 @@
             el: "#app",
             data() {
                 return {
-                    username: getCookie('user'),
+                    username: getCookie('name'),
                     src: "../img/mdb-favicon.ico",
+                    dialogVisible5: false,
+                    radio2: '',
                 };
             },
             methods: {
@@ -201,8 +204,36 @@
                 exit: function () {
                     delCookie('user')
                     delCookie('password')
+                    delCookie('name')
+                    delCookie('job')
+                    delCookie('department')
+                    delCookie('phone')
                     window.location.href = '../index.html'
-                }
+                },
+                // 生成报表
+                produce() {
+                    if (this.radio2 == '') {
+                        this.$message({
+                            message: '请选择生成哪种报表！',
+                            type: 'warning'
+                        });
+                    } else if (this.radio2 == '客户报表') {
+                        axios.get(port + 'client/client_report_form ').then(res => {
+                            console.log(res.data)
+                            window.location.href = port + 'client/client_report_form '
+                        })
+                    } else if (this.radio2 == '项目报表') {
+                        axios.get(port + 'project/project_report_form').then(res => {
+                            console.log(res.data)
+                            window.location.href = port + 'project/project_report_form'
+                        })
+                    } else {
+                        axios.get(port + 'user/user_report_form').then(res => {
+                            console.log(res.data)
+                            window.location.href = port + 'user/user_report_form'
+                        })
+                    }
+                },
 
             }
 

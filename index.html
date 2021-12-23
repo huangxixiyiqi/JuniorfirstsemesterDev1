@@ -34,7 +34,7 @@
   <link rel="stylesheet" href="./css/homepage.css">
   <!-- 基础样式 -->
   <link rel="stylesheet" href="./css/base.css">
-
+  <script src="./global.js"></script>
 
 
 </head>
@@ -57,8 +57,11 @@
             <el-form-item label="密码" prop="pass">
               <el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
             </el-form-item>
+            <el-form-item prop="pass">
+              <el-checkbox v-model="checked">是否记住</el-checkbox>
+            </el-form-item>
             <el-form-item>
-              <el-button class="bt" type="primary" @click="submitForm('ruleForm')" >登录</el-button>
+              <el-button class="bt" type="primary" @click="submitForm('ruleForm')">登录</el-button>
               <el-button @click="register()">注册</el-button>
             </el-form-item>
           </el-form>
@@ -72,7 +75,7 @@
   </div>
 
   <script>
-    
+
     var app = new Vue({
       el: "#app",
       data() {
@@ -98,6 +101,12 @@
             pass: '',
             account: ''
           },
+          user: {
+            account: '',
+            password: '',
+            remembered: false,
+          },
+          checked: false,
           rules: {
             pass: [
               { validator: validatePass, trigger: 'blur' }
@@ -110,28 +119,62 @@
       },
       methods: {
         submitForm(formName) {
-          if (this.ruleForm.account == 1 && this.ruleForm.pass == 1) {
-            // axios.get('http://localhost:8080/stock/getbyid/1').then(res => {
-            //             this.message = res.data['stockname']
-            //             console.log(res.data)
+          this.user.account = this.ruleForm.account
+          this.user.password = this.ruleForm.pass
+          this.user.remembered = this.checked
+          axios.post(port + 'user/login', this.user).then(res => {
+            console.log(res.data)
+            // 登陆成功
 
-            //         })
-            //保存cookie信息，=号前面是Name，=后面是value
-            document.cookie = 'user=彭海栗大帅哥;path=/'
-            document.cookie = 'password=123;path=/'
-            window.location.href = './admin/admin.html'//跳转
-            //window.location.href = './frontdesk/frontdesk.html'//跳转
-            //window.location.href = './staff/staff.html'//跳转
-            //window.location.href = './supervisor/supervisor.html'//跳转
-          }
-          this.$refs[formName].validate((valid) => {
-            if (valid) {
-              alert('submit!');
-            } else {
-              console.log('error submit!!');
-              return false;
+            if (res.data.msg == 'ok') {
+              this.$message({
+                message: '登录成功!',
+                type: 'success'
+              });
+              document.cookie = 'user=' + this.user.account + ';path=/'
+              document.cookie = 'password=' + this.user.password + ';path=/'
+              document.cookie = 'job=' + res.data.data.job + ';path=/'
+              document.cookie = 'department=' + res.data.data.department + ';path=/'
+              document.cookie = 'name=' + res.data.data.name + ';path=/'
+              document.cookie = 'staff_id=' + res.data.data.staff_id + ';path=/'
+              document.cookie = 'phone=' + res.data.data.phone + ';path=/'
+              var s = ''
+              s = res.data.data.job
+              if (s.indexOf('员工') != -1) {
+                window.location.href = './staff/staff.html'//跳转
+              } else if (s.indexOf('主管') != -1) {
+                window.location.href = './supervisor/supervisor.html'//跳转
+              } else if (s.indexOf('前台') != -1) {
+                window.location.href = './frontdesk/frontdesk.html'//跳转
+              } else {
+                window.location.href = './admin/admin.html'//跳转
+              }
             }
-          });
+            else {
+              this.$message({
+                message: res.data.msg,
+                type: 'warning'
+              });
+            }
+          })
+          // if (this.ruleForm.account == 1 && this.ruleForm.pass == 1) {
+
+          //   //保存cookie信息，=号前面是Name，=后面是value
+          //   document.cookie = 'user=彭海栗大帅哥;path=/'
+          //   document.cookie = 'password=123;path=/'
+          //   window.location.href = './admin/admin.html'//跳转
+          //   //window.location.href = './frontdesk/frontdesk.html'//跳转
+          //   //window.location.href = './staff/staff.html'//跳转
+          //   //window.location.href = './supervisor/supervisor.html'//跳转
+          // }
+          // this.$refs[formName].validate((valid) => {
+          //   if (valid) {
+          //     alert('submit!');
+          //   } else {
+          //     console.log('error submit!!');
+          //     return false;
+          //   }
+          // });
         },
         register() {
           window.location.href = './register.html'//跳转

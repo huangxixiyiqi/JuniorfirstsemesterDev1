@@ -1,10 +1,10 @@
 <!--
  * @Author: your name
- * @Date: 2021-12-17 11:09:51
- * @LastEditTime: 2021-12-23 09:52:58
+ * @Date: 2021-12-23 10:02:11
+ * @LastEditTime: 2021-12-23 10:20:47
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- * @FilePath: \FrontEndcode\admin\project.html
+ * @FilePath: \FrontEndcode\supervisor\project.html
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -13,7 +13,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administrator</title>
+    <title>Supervisor</title>
     <!-- 重置样式表 -->
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/normalize.css">
@@ -57,7 +57,7 @@
     <script type="text/javascript" src="../js/deletecookie.js"></script>
     <!-- 基础样式 -->
     <link rel="stylesheet" href="../css/base.css">
-    <link rel="stylesheet" href="./css/project.css">
+    <link rel="stylesheet" href="../admin/css/project.css">
     <script src="../global.js"></script>
 
 </head>
@@ -68,10 +68,10 @@
     <div id="app">
         <header>
             <!--Navbar-->
-            <nav class="navbar navbar-expand-md navbar-dark nav-color ">
+            <nav class="navbar navbar-expand-md navbar-dark 	nav-color">
                 <div class="container">
                     <!-- Navbar brand -->
-                    <a class="navbar-brand" href="./admin.html">Administrator</a>
+                    <a class="navbar-brand" href="./supervisor.html">Supervisor</a>
                     <!-- Collapse button -->
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav"
                         aria-controls="basicExampleNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -82,25 +82,22 @@
                         <!-- Links -->
                         <ul class="navbar-nav mr-auto">
                             <li class="nav-item active">
-                                <a class="nav-link" href="./admin.html">Home
+                                <a class="nav-link" href="./supervisor.html">Home
                                     <span class="sr-only">(current)</span>
                                 </a>
                             </li>
+
+                            <!-- Dropdown -->
                             <li class="nav-item">
-                                <a class="nav-link" href="project.html">项目管理</a>
+                                <a class="nav-link" href="./project.html">项目</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="./staffinfo.html">员工管理</a>
-                            </li>
-
-
-
-                            <li class="nav-item">
-                                <a class="nav-link" href="./customer.html">客户管理</a>
+                                <a class="nav-link" href="#">审核任务</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#" @click="dialogVisible5 = true">生成报表</a>
                             </li>
+
                         </ul>
                         <!-- Links -->
 
@@ -116,7 +113,12 @@
                         </span>
                         <el-dropdown-menu slot="dropdown">
                             <el-dropdown-item divided>
+
                                 <a id="personal" href="./home.html"><i class="el-icon-user"></i>个人资料</a>
+                            </el-dropdown-item>
+                            <el-dropdown-item divided>
+
+                                <a id="personal" href="../staff/staff.html"><i class="el-icon-thumb"></i>切换员工系统</a>
                             </el-dropdown-item>
                             <el-dropdown-item divided>
                                 <div @click="exit">
@@ -128,7 +130,7 @@
                     </el-dropdown>
                 </div>
             </nav>
-            <!--/.Navbar-->
+
         </header>
 
         <div class="card-wrapper  clearfix">
@@ -177,7 +179,8 @@
                                 <template slot-scope="scope">
                                     <el-button @click="handle(scope.$index, scope.row)"
                                         style="width: 50PX;padding: 0;line-height: 40PX;">文件</el-button>
-                                    <el-button @click="handletask(scope.$index, scope.row)" style="width: 80PX;padding: 0;line-height: 40PX;">分配任务</el-button>
+                                    <el-button @click="handletask(scope.$index, scope.row)"
+                                        style="width: 80PX;padding: 0;line-height: 40PX;">分配任务</el-button>
                                     <el-button @click="handleEdit(scope.$index, scope.row)">更新项目信息</el-button>
                                     <el-button type="danger" @click="handleDelete(scope.$index, scope.row)">
                                         删除项目</el-button>
@@ -483,7 +486,7 @@
                             project_beg_time: data[i].project_beg_time,
                             project_price: data[i].project_price,
                             project_schedule: data[i].project_schedule, //项目进度
-                            // manager_id:data[i].manager_id
+                            // manager_id:data[i][0].manager_id
                         })
 
                     }
@@ -557,7 +560,7 @@
                         date2: '',
                         project_price: '',
                         project_schedule: '0',
-                        manager_id:''
+                        manager_id: ''
                     },
                     //项目负责人下拉列表
                     options1: [{
@@ -844,7 +847,7 @@
                 // 创建项目
                 create_project() {
                     this.form.project_beg_time = this.form.date1 + this.form.date2
-                    // this.form.manager_id=getCookie('staff_id')
+                    // this.form.manager_id = getCookie('staff_id')
                     if (this.form.project_name == '') {
                         alert('请输入项目名称！')
                     } else if (this.form.client_id == '') {
@@ -876,6 +879,11 @@
                                 type: 'success'
                             });
                             window.location.href = './project.html'
+                        } else {
+                            this.$message({
+                                message: '分配任务失败!',
+                                type: 'warning'
+                            });
                         }
                     })
                 },

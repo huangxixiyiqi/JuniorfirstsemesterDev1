@@ -1,10 +1,10 @@
 <!--
  * @Author: your name
- * @Date: 2021-12-17 11:09:51
- * @LastEditTime: 2021-12-23 09:52:58
+ * @Date: 2021-12-23 10:16:32
+ * @LastEditTime: 2021-12-23 10:23:21
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- * @FilePath: \FrontEndcode\admin\project.html
+ * @FilePath: \FrontEndcode\staff\project.html
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -13,7 +13,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administrator</title>
+    <title>Staff</title>
     <!-- 重置样式表 -->
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/normalize.css">
@@ -57,7 +57,7 @@
     <script type="text/javascript" src="../js/deletecookie.js"></script>
     <!-- 基础样式 -->
     <link rel="stylesheet" href="../css/base.css">
-    <link rel="stylesheet" href="./css/project.css">
+    <link rel="stylesheet" href="../admin/css/project.css">
     <script src="../global.js"></script>
 
 </head>
@@ -68,10 +68,10 @@
     <div id="app">
         <header>
             <!--Navbar-->
-            <nav class="navbar navbar-expand-md navbar-dark nav-color ">
+            <nav class="navbar navbar-expand-md navbar-dark 	nav-color">
                 <div class="container">
                     <!-- Navbar brand -->
-                    <a class="navbar-brand" href="./admin.html">Administrator</a>
+                    <a class="navbar-brand" href="./staff.html">Staff</a>
                     <!-- Collapse button -->
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav"
                         aria-controls="basicExampleNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -82,25 +82,17 @@
                         <!-- Links -->
                         <ul class="navbar-nav mr-auto">
                             <li class="nav-item active">
-                                <a class="nav-link" href="./admin.html">Home
+                                <a class="nav-link" href="./staff.html">Home
                                     <span class="sr-only">(current)</span>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="project.html">项目管理</a>
+                                <a class="nav-link" href="./project.html">项目</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="./staffinfo.html">员工管理</a>
+                                <a class="nav-link" href="#">查询客户信息</a>
                             </li>
 
-
-
-                            <li class="nav-item">
-                                <a class="nav-link" href="./customer.html">客户管理</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#" @click="dialogVisible5 = true">生成报表</a>
-                            </li>
                         </ul>
                         <!-- Links -->
 
@@ -110,13 +102,25 @@
                 </div>
                 <!-- 用户栏 -->
                 <div>
+                    <div class="user-notice">
+                        <a href="./task.html">
+                            <el-badge :is-dot="notice" class="notice-item">
+                                <i class="el-icon-message-solid "></i>
+                            </el-badge>
+                        </a>
+                    </div>
                     <el-dropdown>
                         <span class="el-dropdown-link" id="user">
                             {{username}}
                         </span>
                         <el-dropdown-menu slot="dropdown">
                             <el-dropdown-item divided>
+
                                 <a id="personal" href="./home.html"><i class="el-icon-user"></i>个人资料</a>
+                            </el-dropdown-item>
+                            <el-dropdown-item divided id="trans" style="display: none;">
+                                <a id="personal" href="../supervisor/supervisor.html"><i
+                                        class="el-icon-thumb"></i>切换主管系统</a>
                             </el-dropdown-item>
                             <el-dropdown-item divided>
                                 <div @click="exit">
@@ -129,6 +133,7 @@
                 </div>
             </nav>
             <!--/.Navbar-->
+
         </header>
 
         <div class="card-wrapper  clearfix">
@@ -139,9 +144,9 @@
                 <div class="left-item " id="c-list" @click="changetoList()">
                     <a id="c-list-a"><i class="el-icon-user-solid"></i> 项目列表</a>
                 </div>
-                <div class="left-item " id="c-new" @click="changetoNew()">
+                <!-- <div class="left-item " id="c-new" @click="changetoNew()">
                     <a id="c-new-a"><i class="el-icon-circle-plus"></i> 新建项目</a>
-                </div>
+                </div> -->
             </div>
             <div class="inner">
                 <div class="top">
@@ -175,12 +180,13 @@
                                 </template>
 
                                 <template slot-scope="scope">
-                                    <el-button @click="handle(scope.$index, scope.row)"
-                                        style="width: 50PX;padding: 0;line-height: 40PX;">文件</el-button>
-                                    <el-button @click="handletask(scope.$index, scope.row)" style="width: 80PX;padding: 0;line-height: 40PX;">分配任务</el-button>
-                                    <el-button @click="handleEdit(scope.$index, scope.row)">更新项目信息</el-button>
-                                    <el-button type="danger" @click="handleDelete(scope.$index, scope.row)">
-                                        删除项目</el-button>
+                                    <el-button @click="handle(scope.$index, scope.row)">项目文件</el-button>
+                                    <el-button @click="handleEdit(scope.$index, scope.row)"
+                                        style="border:none;color:transparent;background-color:transparent;"
+                                        :disabled="true">更新项目信息</el-button>
+                                    <el-button type="danger" @click="handleDelete(scope.$index, scope.row)"
+                                        style="border:none;color:transparent;background-color:transparent;"
+                                        :disabled="true">删除项目</el-button>
                                 </template>
                             </el-table-column>
                         </el-table>
@@ -441,16 +447,7 @@
             </span>
         </el-dialog>
 
-        <!-- 生成报表 -->
-        <el-dialog title="生成报表" :visible.sync="dialogVisible5" width="30%">
-            <el-radio v-model="radio2" label="客户报表">客户报表</el-radio>
-            <el-radio v-model="radio2" label="项目报表">项目报表</el-radio>
-            <el-radio v-model="radio2" label="员工报表">员工报表</el-radio>
-            <span slot="footer" class="dialog-footer">
-                <el-button @click="dialogVisible5 = false">取 消</el-button>
-                <el-button type="primary" @click="produce">确 定</el-button>
-            </span>
-        </el-dialog>
+
         <!-- 回到顶部工具栏 -->
         <div class="to-top">
             <a href="#">
@@ -469,21 +466,53 @@
         var app = new Vue({
             el: "#app",
             created() {
-                axios.get(port + 'project/find_all').then(res => {
+                var s = ''
+                s = getCookie('job')
+                if (s.indexOf('主管') != -1) {
+                    trans.style.display = "block"
+                }
+                else {
+                    trans.style.display = "none"
+                }
+                axios.get(port + 'task/get_staff_task/' + getCookie('staff_id')).then(res => {
+                    console.log(res.data)
+                    if (res.data.msg == 'ok') {
+                        this.notice = true
+                    } else {
+                        this.notice = false
+                    }
+                    data = res.data.data
+                    for (let i in data) {
+                        this.task_data1.push({
+                            task_distribution_is_accepted: data[i].task_distribution_is_accepted,
+                            task_distribution_begin_time: data[i].task_distribution_begin_time,
+                            task_distribution_end_time: data[i].task_distribution_end_time,
+                            task_info: data[i].task_info,
+                            project_id: data[i].project_id,
+                            staff_id: data[i].staff_id,
+                            manager_id: data[i].manager_id,
+                            task_property: data[i].task_property,
+                            task_id: data[i].task_id,
+                            task_distribution_id: data[i].task_distribution_id,
+                        })
+
+                    }
+                })
+                axios.get(port + 'project/find_project_of_staff/' + getCookie('staff_id')).then(res => {
                     console.log(res.data)
                     data = res.data.data
                     console.log(data)
                     for (let i in data) {
                         this.tableData1.push({
-                            project_id: data[i].project_id,
-                            project_name: data[i].project_name,
-                            project_person_in_charge: data[i].project_person_in_charge,
-                            client_name: data[i].client_name,
-                            project_state: data[i].project_state,
-                            project_beg_time: data[i].project_beg_time,
-                            project_price: data[i].project_price,
-                            project_schedule: data[i].project_schedule, //项目进度
-                            // manager_id:data[i].manager_id
+                            project_id: data[i][0].project_id,
+                            project_name: data[i][0].project_name,
+                            project_person_in_charge: data[i][0].project_person_in_charge,
+                            client_name: data[i][0].client_name,
+                            project_state: data[i][0].project_state,
+                            project_beg_time: data[i][0].project_beg_time,
+                            project_price: data[i][0].project_price,
+                            project_schedule: data[i][0].project_schedule, //项目进度
+                            // manager_id:data[i][0].manager_id
                         })
 
                     }
@@ -513,7 +542,7 @@
             data() {
 
                 return {
-
+                    notice: false,  //true则显示红点，false不显示红点
                     username: getCookie('name'),
                     src: "../img/mdb-favicon.ico",
                     tableData: [
@@ -545,7 +574,7 @@
                     dialogVisible2: false,
                     dialogVisible3: false,
                     dialogVisible4: false,
-                    dialogVisible5: false,
+
                     form: {
                         // project_id: '',
                         project_name: '',
@@ -557,7 +586,6 @@
                         date2: '',
                         project_price: '',
                         project_schedule: '0',
-                        manager_id:''
                     },
                     //项目负责人下拉列表
                     options1: [{
@@ -641,7 +669,7 @@
                     search_task_property: '',
                     search_task_distribution_is_accepted: '',
                     radio1: '模型',
-                    radio2: '',
+
                 };
             },
             methods: {
@@ -844,7 +872,7 @@
                 // 创建项目
                 create_project() {
                     this.form.project_beg_time = this.form.date1 + this.form.date2
-                    // this.form.manager_id=getCookie('staff_id')
+
                     if (this.form.project_name == '') {
                         alert('请输入项目名称！')
                     } else if (this.form.client_id == '') {
@@ -910,35 +938,30 @@
                         });
                     });
                 },
-                // 生成报表
-                produce() {
-                    if (this.radio2 == '') {
-                        this.$message({
-                            message: '请选择生成哪种报表！',
-                            type: 'warning'
-                        });
-                    } else if (this.radio2 == '客户报表') {
-                        axios.get(port + 'client/client_report_form ').then(res => {
-                            console.log(res.data)
-                            window.location.href = port + 'client/client_report_form '
-                        })
-                    } else if (this.radio2 == '项目报表') {
-                        axios.get(port + 'project/project_report_form').then(res => {
-                            console.log(res.data)
-                            window.location.href = port + 'project/project_report_form'
-                        })
-                    } else {
-                        axios.get(port + 'user/user_report_form').then(res => {
-                            console.log(res.data)
-                            window.location.href = port + 'user/user_report_form'
-                        })
-                    }
-                },
                 handle(index, row) {
                     window.open(port)
                 },
-            }
 
+            },
+            mounted() {
+                if (this.timer) {
+                    clearInterval(this.timer)
+                } else {
+                    this.timer = setInterval(() => {
+                        // console.log(1)
+                        //获取数据
+                        axios.get(port + 'task/get_staff_task/' + getCookie('staff_id')).then(res => {
+                            console.log(res.data)
+                            if (res.data.msg == 'ok') {
+                                this.notice = true
+                            } else {
+                                this.notice = false
+                            }
+                        })
+                    }, 30000)
+                }
+
+            },
         })
     </script>
 

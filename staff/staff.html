@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-26 10:45:02
- * @LastEditTime: 2021-12-18 19:51:47
+ * @LastEditTime: 2021-12-23 10:17:18
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \FrontEndcode\staff\index.html
@@ -84,23 +84,13 @@
                                     <span class="sr-only">(current)</span>
                                 </a>
                             </li>
-                            <!-- Dropdown -->
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
-                                    aria-haspopup="true" aria-expanded="false">项目</a>
-                                <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
-                                    <a class="dropdown-item" href="#">查看项目信息</a>
-                                    <a class="dropdown-item" href="#">查看项目进度</a>
-                                    <a class="dropdown-item" href="#">查看项目文件</a>
-
-                                </div>
+                            <li class="nav-item">
+                                <a class="nav-link" href="./project.html">项目</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#">查询客户信息</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">修改意见</a>
-                            </li>
+                            
                         </ul>
                         <!-- Links -->
 
@@ -123,11 +113,12 @@
                         </span>
                         <el-dropdown-menu slot="dropdown">
                             <el-dropdown-item divided>
-                                
+
                                 <a id="personal" href="./home.html"><i class="el-icon-user"></i>个人资料</a>
                             </el-dropdown-item>
                             <el-dropdown-item divided id="trans" style="display: none;">
-                                <a id="personal" href="../supervisor/supervisor.html"><i class="el-icon-thumb"></i>切换主管系统</a>
+                                <a id="personal" href="../supervisor/supervisor.html"><i
+                                        class="el-icon-thumb"></i>切换主管系统</a>
                             </el-dropdown-item>
                             <el-dropdown-item divided>
                                 <div @click="exit">
@@ -193,33 +184,59 @@
             el: "#app",
             created() {
                 //合并时，读取账号信息，如果该账号是员工，则不显示切换按钮，是主管则显示
-                trans.style.display = "block"
+                var s = ''
+                s = getCookie('job')
+                if (s.indexOf('主管') != -1) {
+                    trans.style.display = "block"
+                }
+                else {
+                    trans.style.display = "none"
+                }
+                axios.get(port + 'task/get_staff_task/' + getCookie('staff_id')).then(res => {
+                    console.log(res.data)
+                    if (res.data.msg == 'ok') {
+                        this.notice = true
+                    } else {
+                        this.notice = false
+                    }
+                })
             },
             data() {
                 return {
-                    username: getCookie('user'),
+                    username: getCookie('name'),
                     src: "../img/mdb-favicon.ico",
-                    notice: true  //true则显示红点，false不显示红点
+                    notice: false  //true则显示红点，false不显示红点
                 };
 
             },
-            methods: {
-                test: function () {
-                    // axios.get('http://localhost:8080/stock/getbyid/1').then(res => {
-                    //     this.message = res.data['stockname']
-                    //     console.log(res.data)
+             mounted() {
+                if (this.timer) {
+                    clearInterval(this.timer)
+                } else {
+                    this.timer = setInterval(() => {
+                        // console.log(1)
+                        //获取数据
+                        axios.get(port + 'task/get_staff_task/' + getCookie('staff_id')).then(res => {
+                            console.log(res.data)
+                            if (res.data.msg == 'ok') {
+                                this.notice = true
+                            } else {
+                                this.notice = false
+                            }
+                        })
+                    }, 60000)
+                }
 
-                    // })
-                    setName("帅哥彭海栗")
-                    this.username = getName()
+            },
+           methods: {
 
-                    //window.location.href = 'index.html'//跳转
-
-
-                },
                 exit: function () {
                     delCookie('user')
                     delCookie('password')
+                    delCookie('name')
+                    delCookie('job')
+                    delCookie('department')
+                    delCookie('phone')
                     window.location.href = '../index.html'
                 }
 

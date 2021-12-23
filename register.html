@@ -112,7 +112,10 @@
           user: {
             account: '',
             password: '',
-            id: ''
+            job: '',
+            name: '新用户',
+            phone: '0000',
+            department: ''
           },
           rules: {
             pass: [
@@ -126,11 +129,24 @@
             ],
           },
           options: [{
-            value: '主管',
-            label: '主管'
+            value: '模型主管',
+            label: '模型主管'
           }, {
-            value: '员工',
-            label: '员工'
+            value: '渲染主管',
+            label: '渲染主管'
+          }, {
+            value: '后期主管',
+            label: '后期主管'
+          },
+          {
+            value: '模型员工',
+            label: '模型员工'
+          }, {
+            value: '渲染员工',
+            label: '渲染员工'
+          }, {
+            value: '后期员工',
+            label: '后期员工'
           }, {
             value: '前台',
             label: '前台'
@@ -146,19 +162,33 @@
               message: "两次输入密码不一致!",
               type: 'error'
             });
-            
+
             return false;
           }
           else {
             var data = {}
             this.user.account = this.ruleForm.account
             this.user.password = this.ruleForm.pass
-            this.user.id = this.value
-            console.log(port + "user/register/")
+            this.user.job = this.value
+            this.user.department = this.value[0] + this.value[1]
+            console.log(port + "user/register")
             console.log(this.user)
-            axios.post(port + "user/register/", this.user).then(res => {
-              console.log(1)
+            axios.post(port + "user/register", this.user).then(res => {
+              // console.log(1)
               console.log(res.data)
+              if (res.data.status == 200) {
+                this.$message({
+                  message: '创建成功！',
+                  type: 'success'
+                });
+                window.location.href = './index.html'//跳转
+              }
+              else {
+                this.$message({
+                  message: '创建失败！',
+                  type: 'warning'
+                });
+              }
             })
           }
         },

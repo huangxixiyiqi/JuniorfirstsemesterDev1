@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-12-12 17:29:40
- * @LastEditTime: 2021-12-17 11:08:27
+ * @LastEditTime: 2021-12-23 09:59:29
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \FrontEndcode\frontdesk\customer.html
@@ -86,10 +86,13 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">员工信息建立</a>
+                                <a class="nav-link" href="#">员工管理</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="./customer.html">客户管理</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" @click="dialogVisible5 = true">生成报表</a>
                             </li>
                         </ul>
                         <!-- Links -->
@@ -214,6 +217,16 @@
                 <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
             </span>
         </el-dialog>
+        <!-- 生成报表 -->
+        <el-dialog title="生成报表" :visible.sync="dialogVisible5" width="30%">
+            <el-radio v-model="radio2" label="客户报表">客户报表</el-radio>
+            <el-radio v-model="radio2" label="项目报表">项目报表</el-radio>
+            <el-radio v-model="radio2" label="员工报表">员工报表</el-radio>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible5 = false">取 消</el-button>
+                <el-button type="primary" @click="produce">确 定</el-button>
+            </span>
+        </el-dialog>
         <!-- 回到顶部工具栏 -->
         <div class="to-top">
             <a href="#">
@@ -232,7 +245,7 @@
             el: "#app",
             data() {
                 return {
-                    username: getCookie('user'),
+                    username: getCookie('name'),
                     src: "../img/mdb-favicon.ico",
                     tableData: [{
                         id: '1',
@@ -330,7 +343,9 @@
                         phone: '',
                         email: ''
                     },
-                    dialogVisible: false
+                    dialogVisible: false,
+                    radio2: '',
+                    dialogVisible5: false,
                 };
 
             },
@@ -362,7 +377,7 @@
                         this.tableData = this.tableData1
                     }
 
-                },      
+                },
                 handleClose(done) {
                     this.$confirm('确认关闭？')
                         .then(_ => {
@@ -373,6 +388,10 @@
                 exit: function () {
                     delCookie('user')
                     delCookie('password')
+                    delCookie('name')
+                    delCookie('job')
+                    delCookie('department')
+                    delCookie('phone')
                     window.location.href = '../index.html'
                 },
                 handleEdit(index, row) {
@@ -406,7 +425,31 @@
                     this.innertitle = '新建客户'
                     document.getElementById("content1").style.display = 'none'
                     document.getElementById("content2").style.display = 'block'
-                }
+                },
+                // 生成报表
+                produce() {
+                    if (this.radio2 == '') {
+                        this.$message({
+                            message: '请选择生成哪种报表！',
+                            type: 'warning'
+                        });
+                    } else if (this.radio2 == '客户报表') {
+                        axios.get(port + 'client/client_report_form ').then(res => {
+                            console.log(res.data)
+                            window.location.href = port + 'client/client_report_form '
+                        })
+                    } else if (this.radio2 == '项目报表') {
+                        axios.get(port + 'project/project_report_form').then(res => {
+                            console.log(res.data)
+                            window.location.href = port + 'project/project_report_form'
+                        })
+                    } else {
+                        axios.get(port + 'user/user_report_form').then(res => {
+                            console.log(res.data)
+                            window.location.href = port + 'user/user_report_form'
+                        })
+                    }
+                },
 
             }
 

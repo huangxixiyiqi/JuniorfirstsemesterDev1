@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-12-10 19:27:05
- * @LastEditTime: 2021-12-17 11:13:29
+ * @LastEditTime: 2021-12-23 09:56:51
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \FrontEndcode\admin\home.html
@@ -59,13 +59,13 @@
     <link rel="stylesheet" href="../css/base.css">
     <link rel="stylesheet" href="./css/home.css">
     <script src="../global.js"></script>
-    
+
 </head>
 
 <body>
 
 
-    <div id="app" >
+    <div id="app">
         <header>
             <!--Navbar-->
             <nav class="navbar navbar-expand-md navbar-dark nav-color ">
@@ -93,26 +93,14 @@
                                 <a class="nav-link" href="./staffinfo.html">员工管理</a>
                             </li>
 
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">计算工资</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">设置账号权限</a>
-                            </li>
+
+
                             <li class="nav-item">
                                 <a class="nav-link" href="./customer.html">客户管理</a>
                             </li>
-                            <!-- Dropdown
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
-                                    aria-haspopup="true" aria-expanded="false">客户管理</a>
-                                <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
-                                    <a class="dropdown-item" href="#">客户信息建立</a>
-                                    <a class="dropdown-item" href="#">客户信息删除</a>
-                                    <a class="dropdown-item" href="#">客户信息修改</a>
-                                    <a class="dropdown-item" href="#">客户信息查询</a>
-                                </div>
-                            </li> -->
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" @click="dialogVisible5 = true">生成报表</a>
+                            </li>
                         </ul>
                         <!-- Links -->
 
@@ -157,27 +145,25 @@
                     <span>| 我的信息</span>
                 </div>
                 <div class="content">
-                    <el-form  ref="form" :model="form" label-width="80px" style="margin: 0 auto;">
+                    <el-form ref="form" :model="form" label-width="80px" style="margin: 0 auto;">
                         <el-form-item class="e" label="姓名：">
-                            <el-input v-model="form.name" ></el-input>
+                            <el-input v-model="form.name"></el-input>
                         </el-form-item>
-                        <el-form-item  class="e" label="账号：">
-                            <el-input v-model="form.account"></el-input>
+                        <el-form-item class="e" label="账号：">
+                            <el-input v-model="form.account" :disabled="true"></el-input>
                         </el-form-item>
                         <el-form-item label="身份：">
-                            <el-select v-model="form.id" :placeholder="idph">
-                                <el-option label="主管" value="主管"></el-option>
-                                <el-option label="员工" value="员工"></el-option>
+                            <el-select v-model="form.job" :placeholder="idph" :disabled="true">
+                                <el-option label="模型主管" value="模型主管"></el-option>
+                                <el-option label="渲染主管" value="渲染主管"></el-option>
+                                <el-option label="后期主管" value="后期主管"></el-option>
+                                <el-option label="模型员工" value="模型员工"></el-option>
+                                <el-option label="渲染员工" value="渲染员工"></el-option>
+                                <el-option label="后期员工" value="后期员工"></el-option>
                                 <el-option label="前台" value="前台"></el-option>
                             </el-select>
-                        </el-form-item>             
-                        <el-form-item label="部门：">
-                            <el-radio-group v-model="form.department">
-                              <el-radio label="线上品牌商赞助"></el-radio>
-                              <el-radio label="线下场地免费"></el-radio>
-                              <el-radio label="线下1场地免费"></el-radio>
-                            </el-radio-group>
-                          </el-form-item>
+                        </el-form-item>
+
                         <el-form-item class="p" label="手机号：">
                             <el-input type="text" v-model="form.phone"></el-input>
                         </el-form-item>
@@ -190,6 +176,16 @@
         </div>
 
 
+        <!-- 生成报表 -->
+        <el-dialog title="生成报表" :visible.sync="dialogVisible5" width="30%">
+            <el-radio v-model="radio2" label="客户报表">客户报表</el-radio>
+            <el-radio v-model="radio2" label="项目报表">项目报表</el-radio>
+            <el-radio v-model="radio2" label="员工报表">员工报表</el-radio>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible5 = false">取 消</el-button>
+                <el-button type="primary" @click="produce">确 定</el-button>
+            </span>
+        </el-dialog>
         <!-- 回到顶部工具栏 -->
         <div class="to-top">
             <a href="#">
@@ -208,29 +204,81 @@
             el: "#app",
             data() {
                 return {
-                    username: getCookie('user'),
+                    username: getCookie('name'),
                     src: "../img/mdb-favicon.ico",
+                    notice: true,  //true则显示红点，false不显示红点
                     form: {
-                        name: getCookie('user'),
-                        account: getCookie('account'),
-                        id: '',
-                        department: '',
-                        phone: ''
+                        name: getCookie('name'),
+                        account: getCookie('user'),
+                        job: getCookie('job'),
+                        department: getCookie('department'),
+                        phone: getCookie('phone'),
+                        // staff_id:getCookie('staff_id')
                     },
-                    idph:'111',
-                    
+                    idph: '111',
+                    dialogVisible5: false,
+                    radio2: '',
                 };
+
+
             },
             methods: {
+                onSubmit: function () {
+                    axios.post(port + 'user/update_staff_info/' + getCookie('staff_id'), this.form).then(res => {
+                        console.log(res.data)
+                        this.$message({
+                            message: '修改成功!',
+                            type: 'success'
+                        });
+                        delCookie('name')
+                        delCookie('job')
+                        delCookie('department')
+                        delCookie('phone')
+                        document.cookie = 'job=' + this.form.job + ';path=/'
+                        document.cookie = 'department=' + this.form.department + ';path=/'
+                        document.cookie = 'name=' + this.form.name + ';path=/'
+                        document.cookie = 'phone=' + this.form.phone + ';path=/'
+                        this.username = this.form.name
+                    })
+                },
                 exit: function () {
                     delCookie('user')
                     delCookie('password')
+                    delCookie('name')
+                    delCookie('job')
+                    delCookie('department')
+                    delCookie('phone')
                     window.location.href = '../index.html'
-                }
+                },
+                // 生成报表
+                produce() {
+                    if (this.radio2 == '') {
+                        this.$message({
+                            message: '请选择生成哪种报表！',
+                            type: 'warning'
+                        });
+                    } else if (this.radio2 == '客户报表') {
+                        axios.get(port + 'client/client_report_form ').then(res => {
+                            console.log(res.data)
+                            window.location.href = port + 'client/client_report_form '
+                        })
+                    } else if (this.radio2 == '项目报表') {
+                        axios.get(port + 'project/project_report_form').then(res => {
+                            console.log(res.data)
+                            window.location.href = port + 'project/project_report_form'
+                        })
+                    } else {
+                        axios.get(port + 'user/user_report_form').then(res => {
+                            console.log(res.data)
+                            window.location.href = port + 'user/user_report_form'
+                        })
+                    }
+                },
 
             }
 
         })
+
     </script>
 
 
