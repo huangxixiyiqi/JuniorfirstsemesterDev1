@@ -15,8 +15,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Administrator</title>
     <!-- 重置样式表 -->
-    <link rel="stylesheet" href="./css/reset.css">
-    <link rel="stylesheet" href="./css/normalize.css">
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/normalize.css">
     <!-- 开发环境版本，包含了有帮助的命令行警告 -->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <!-- <script src="//unpkg.com/vue/dist/vue.js"></script> -->
@@ -150,15 +150,15 @@
                 <div class="content">
                     <!-- 客户列表 -->
                     <el-table :data="tableData" height="900" style="width: 100%;" id="content1">
-                        <el-table-column label="Id" prop="id" class="td-id" width="100">
+                        <el-table-column label="Id" prop="client_id" class="td-id" width="100">
                         </el-table-column>
-                        <el-table-column label="姓名" prop="name" width="100">
+                        <el-table-column label="姓名" prop="client_name" width="100">
                         </el-table-column>
-                        <el-table-column label="手机号码" prop="phone" width="200">
+                        <el-table-column label="手机号码" prop="client_phone" width="200">
                         </el-table-column>
-                        <el-table-column label="QQ" prop="qq" width="200">
+                        <el-table-column label="QQ" prop="client_qq" width="200">
                         </el-table-column>
-                        <el-table-column label="E-mail" prop="email" width="300">
+                        <el-table-column label="E-mail" prop="client_email" width="300">
                         </el-table-column>
                         <el-table-column>
                             <template slot="header" slot-scope="scope">
@@ -172,28 +172,28 @@
                             </template>
 
                             <template slot-scope="scope">
-                                <el-button @click="handleEdit(scope.$index, scope.row)">Edit</el-button>
+                                <el-button @click="handleEdit(scope.$index, scope.row)">编辑客户信息</el-button>
                                 <el-button type="danger" @click="handleDelete(scope.$index, scope.row)">
-                                    Delete</el-button>
+                                    删除客户</el-button>
                             </template>
                         </el-table-column>
                     </el-table>
                     <!-- 新建客户 -->
                     <el-form ref="form" :model="form" label-width="80px" id="content2">
                         <el-form-item label="姓名：">
-                            <el-input v-model="form.name"></el-input>
+                            <el-input v-model="form.client_name"></el-input>
                         </el-form-item>
                         <el-form-item label="手机号：">
-                            <el-input type="text" v-model="form.phone"></el-input>
+                            <el-input type="text" v-model="form.client_phone"></el-input>
                         </el-form-item>
                         <el-form-item label="QQ：">
-                            <el-input v-model="form.qq"></el-input>
+                            <el-input v-model="form.client_qq"></el-input>
                         </el-form-item>
                         <el-form-item label="E-mail：">
-                            <el-input type="text" v-model="form.email"></el-input>
+                            <el-input type="text" v-model="form.client_email"></el-input>
                         </el-form-item>
                         <el-form-item>
-                            <el-button class="savebtn" type="primary" @click="onSubmit">创建</el-button>
+                            <el-button class="savebtn" type="primary" @click="new_client">创建</el-button>
                         </el-form-item>
                     </el-form>
                 </div>
@@ -204,22 +204,22 @@
         <el-dialog title="修改客户信息" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
             <el-form ref="form" :model="form" label-width="80px">
                 <el-form-item label="姓名：">
-                    <el-input v-model="form.name"></el-input>
+                    <el-input v-model="form.client_name"></el-input>
                 </el-form-item>
                 <el-form-item label="手机号：">
-                    <el-input type="text" v-model="form.phone"></el-input>
+                    <el-input type="text" v-model="form.client_phone"></el-input>
                 </el-form-item>
                 <el-form-item label="QQ：">
-                    <el-input v-model="form.qq"></el-input>
+                    <el-input v-model="form.client_qq"></el-input>
                 </el-form-item>
                 <el-form-item label="E-mail：">
-                    <el-input type="text" v-model="form.email"></el-input>
+                    <el-input type="text" v-model="form.client_email"></el-input>
                 </el-form-item>
 
             </el-form>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisible = false">取 消</el-button>
-                <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+                <el-button type="primary" @click="edit">确 定</el-button>
             </span>
         </el-dialog>
 
@@ -249,105 +249,40 @@
 
         var app = new Vue({
             el: "#app",
+            created() {
+                axios.get(port + 'client/find_all').then(res => {
+                    console.log(res.data)
+                    console.log(port + 'client/find_all')
+                    var data = res.data.data
+                    for (let i in data) {
+                        this.tableData1.push({
+                            client_id: data[i].client_id,
+                            client_name: data[i].client_name,
+                            client_phone: data[i].client_phone,
+                            client_qq: data[i].client_qq,
+                            client_email: data[i].client_email,
+
+                        })
+                    }
+                    this.tableData = this.tableData1
+                })
+            },
             data() {
                 return {
                     username: getCookie('name'),
                     src: "../img/mdb-favicon.ico",
-                    tableData: [{
-                        id: '1',
-                        name: '王小虎',
-                        phone: '123431321327',
-                        qq: "23234",
-                        email: '1231212@qq.com'
-                    }, {
-                        id: '1',
-                        name: '彭海丽',
-                        phone: '123456',
-                        qq: "23234",
-                        email: '1232@qq.com'
-                    }, {
-                        id: '1',
-                        name: '王小虎',
-                        phone: '123456',
-                        qq: "23234",
-                        email: '1232@qq.com'
-                    }, {
-                        id: '1',
-                        name: '王小虎',
-                        phone: '123456',
-                        qq: "23234",
-                        email: '1232@qq.com'
-                    }, {
-                        id: '1',
-                        name: '王小虎',
-                        phone: '123456',
-                        qq: "23234",
-                        email: '1232@qq.com'
-                    }, {
-                        id: '1',
-                        name: '王小虎',
-                        phone: '123456',
-                        qq: "23234",
-                        email: '1232@qq.com'
-                    }, {
-                        id: '1',
-                        name: '王小虎',
-                        phone: '123456',
-                        qq: "23234",
-                        email: '1232@qq.com'
-                    }],
+                    tableData: [],
                     //tabledata的备份
-                    tableData1: [{
-                        id: '1',
-                        name: '王小虎',
-                        phone: '123431321327',
-                        qq: "23234",
-                        email: '1231212@qq.com'
-                    }, {
-                        id: '1',
-                        name: '彭海丽',
-                        phone: '123456',
-                        qq: "23234",
-                        email: '1232@qq.com'
-                    }, {
-                        id: '1',
-                        name: '王小虎',
-                        phone: '123456',
-                        qq: "23234",
-                        email: '1232@qq.com'
-                    }, {
-                        id: '1',
-                        name: '王小虎',
-                        phone: '123456',
-                        qq: "23234",
-                        email: '1232@qq.com'
-                    }, {
-                        id: '1',
-                        name: '王小虎',
-                        phone: '123456',
-                        qq: "23234",
-                        email: '1232@qq.com'
-                    }, {
-                        id: '1',
-                        name: '王小虎',
-                        phone: '123456',
-                        qq: "23234",
-                        email: '1232@qq.com'
-                    }, {
-                        id: '1',
-                        name: '王小虎',
-                        phone: '123456',
-                        qq: "23234",
-                        email: '1232@qq.com'
-                    }],
+                    tableData1: [],
                     search_name: '',
                     search_phone: '',
                     innertitle: '客户列表',
                     form: {
-                        name: '',
-                        qq: '',
-                        phone: '',
-                        email: ''
+                        client_name: '',
+                        client_qq: '',
+                        client_phone: '',
+                        client_email: '',
+                        client_id: ''
                     },
                     dialogVisible: false,
                     dialogVisible5: false,
@@ -360,21 +295,21 @@
                     this.tableData = []
                     if (this.search_name != '' && this.search_phone != '') {
                         for (let i in this.tableData1) {
-                            if (this.tableData1[i].name.indexOf(this.search_name) != -1 && this.tableData1[i].phone.indexOf(this.search_phone) != -1) {
+                            if (this.tableData1[i].client_name.indexOf(this.search_name) != -1 && this.tableData1[i].client_phone.indexOf(this.search_phone) != -1) {
                                 this.tableData.push(this.tableData1[i])
                             }
                         }
                     }
                     else if (this.search_name != '' && this.search_phone == '') {
                         for (let i in this.tableData1) {
-                            if (this.tableData1[i].name.indexOf(this.search_name) != -1) {
+                            if (this.tableData1[i].client_name.indexOf(this.search_name) != -1) {
                                 this.tableData.push(this.tableData1[i])
                             }
                         }
                     }
                     else if (this.search_name == '' && this.search_phone != '') {
                         for (let i in this.tableData1) {
-                            if (this.tableData1[i].phone.indexOf(this.search_phone) != -1) {
+                            if (this.tableData1[i].client_phone.indexOf(this.search_phone) != -1) {
                                 this.tableData.push(this.tableData1[i])
                             }
                         }
@@ -403,12 +338,41 @@
                 handleEdit(index, row) {
                     console.log(index, row);
                     this.dialogVisible = true
+                    this.form.client_id = row.client_id
+                    this.form.client_name = row.client_name
+                    this.form.client_phone = row.client_phone
+                    this.form.client_qq = row.client_qq
+                    this.form.client_email = row.client_email
                 },
                 handleDelete(index, row) {
                     console.log(index, row);
-                    // console.log(row.email)
-                    // row和index是键值对
-                    // console.log(row)
+                    this.$confirm('此操作将删除该客户, 是否继续?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        axios.delete(port + 'client/delete_client/' + row.client_id).then(res => {
+                            console.log(res.data)
+                            if (res.data.status == 200) {
+                                this.$message({
+                                    type: 'success',
+                                    message: '删除成功!'
+                                });
+                                window.location.href = './customer.html'
+                            } else {
+                                this.$message({
+                                    type: 'warning',
+                                    message: '删除失败!'
+                                });
+                            }
+                        })
+
+                    }).catch(() => {
+                        // this.$message({
+                        //     type: 'info',
+                        //     message: '已取消删除'
+                        // });
+                    });
                 },
                 changetoList() {
                     // 修改左侧导航栏的样式
@@ -458,7 +422,52 @@
                         })
                     }
                 },
+                edit() {
+                    this.$confirm('此操作将修改该客户信息, 是否继续?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        axios.post(port + 'client/modify_client/' + this.form.client_id, this.form).then(res => {
+                            console.log(res.data)
+                            if (res.data.status == 200) {
+                                this.$message({
+                                    type: 'success',
+                                    message: '修改成功!'
+                                });
+                                window.location.href = './customer.html'
+                            } else {
+                                this.$message({
+                                    type: 'warning',
+                                    message: '修改失败!'
+                                });
+                            }
+                        })
 
+                    }).catch(() => {
+                        // this.$message({
+                        //     type: 'info',
+                        //     message: '已取消删除'
+                        // });
+                    });
+                },
+                new_client() {
+                    axios.post(port + 'client/add_client', this.form).then(res => {
+                        console.log(res.data)
+                        if (res.data.status == 200) {
+                            this.$message({
+                                type: 'success',
+                                message: '创建成功!'
+                            });
+                            window.location.href = './customer.html'
+                        } else {
+                            this.$message({
+                                type: 'warning',
+                                message: '创建失败!'
+                            });
+                        }
+                    })
+                },
             }
 
         })

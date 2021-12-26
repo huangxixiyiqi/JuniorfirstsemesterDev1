@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-12-17 11:09:51
- * @LastEditTime: 2021-12-23 09:52:58
+ * @LastEditTime: 2021-12-23 22:40:54
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \FrontEndcode\admin\project.html
@@ -177,7 +177,8 @@
                                 <template slot-scope="scope">
                                     <el-button @click="handle(scope.$index, scope.row)"
                                         style="width: 50PX;padding: 0;line-height: 40PX;">文件</el-button>
-                                    <el-button @click="handletask(scope.$index, scope.row)" style="width: 80PX;padding: 0;line-height: 40PX;">分配任务</el-button>
+                                    <el-button @click="handletask(scope.$index, scope.row)"
+                                        style="width: 80PX;padding: 0;line-height: 40PX;">分配任务</el-button>
                                     <el-button @click="handleEdit(scope.$index, scope.row)">更新项目信息</el-button>
                                     <el-button type="danger" @click="handleDelete(scope.$index, scope.row)">
                                         删除项目</el-button>
@@ -379,7 +380,7 @@
                     </template>
 
                     <template slot-scope="scope">
-                        <el-button @click="" style="border:none;color:transparent;background-color:transparent;">edit
+                        <el-button @click="add_task_advise(scope.$index, scope.row)">审核任务
                         </el-button>
                         <!-- <el-button type="danger" @click="handleDelete(scope.$index, scope.row)">delete</el-button> -->
                     </template>
@@ -494,7 +495,7 @@
                     data = res.data.data
                     for (let i in data) {
                         this.options2.push({
-                            value: data[i].client_id,
+                            value: data[i].client_id + ',' + data[i].client_name,
                             label: data[i].client_name,
                         })
                     }
@@ -551,13 +552,15 @@
                         project_name: '',
                         project_person_in_charge: '',
                         client_id: '',
+                        client_name: '',
                         project_state: '未完成',
                         project_beg_time: '',
                         date1: '',
                         date2: '',
                         project_price: '',
                         project_schedule: '0',
-                        manager_id:''
+                        manager_id: '',
+                        project_id: ''
                     },
                     //项目负责人下拉列表
                     options1: [{
@@ -815,6 +818,7 @@
                                 manager_id: data[i].manager_id,
                                 task_property: data[i].task_property,
                                 task_id: data[i].task_id,
+                                task_distribution_id: data[i].task_distribution_id
                             })
 
                         }
@@ -843,8 +847,11 @@
                 },
                 // 创建项目
                 create_project() {
-                    this.form.project_beg_time = this.form.date1 + this.form.date2
+                    this.form.project_beg_time = this.form.date1 + ' ' + this.form.date2
                     // this.form.manager_id=getCookie('staff_id')
+                    var id = this.form.client_id
+                    this.form.client_id = id.split(',')[0]
+                    this.form.client_name = id.split(',')[1]
                     if (this.form.project_name == '') {
                         alert('请输入项目名称！')
                     } else if (this.form.client_id == '') {
@@ -858,6 +865,12 @@
                                     message: '创建成功!',
                                     type: 'success'
                                 });
+                                this.form.project_id = res.data.data.project_id
+                                axios.post(port + 'mkdir_pro_cli_time', this.form).then(res => {
+                                    console.log(res.data)
+                                    console.log(1)
+                                    console.log(this.form)
+                                })
                                 window.location.href = './project.html'
                             }
                         })
@@ -935,7 +948,45 @@
                     }
                 },
                 handle(index, row) {
-                    window.open(port)
+                    window.open(port + 'folder/?pdir=' + row.project_name + '-' + row.client_name + '-' + row.project_beg_time.toString().split(' ')[0])
+                    console.log(port + 'folder/?pdir=' + row.project_name + '-' + row.client_name + '-' + row.project_beg_time.toString().split(' ')[0])
+                },
+                // 审核任务 给意见
+                add_task_advise(index, row) {
+                    console.log(row)
+                    this.$prompt('请输入审核意见', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        // inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
+                        // inputErrorMessage: '邮箱格式不正确'
+                        inputType: 'textarea',
+                    }).then(({ value }) => {
+                        var task_advise = {
+                            task_distribution: row.task_distribution_id.toString(),
+                            task_advise_content: value,
+                            task_reviewer: getCookie('name'),
+                            task_manager: getCookie('staff_id')
+                        }
+
+                        console.log(task_advise)
+                        axios.post(port + 'task/add_task_advise', task_advise).then(res => {
+                            console.log(1)
+                            console.log(res.data)
+                            if (res.data.status == 200) {
+                                this.$message({
+                                    type: 'success',
+                                    message: '发送意见成功'
+                                });
+                            }
+
+                        })
+
+                    }).catch(() => {
+                        this.$message({
+                            type: 'info',
+                            message: '取消输入'
+                        });
+                    });
                 },
             }
 
