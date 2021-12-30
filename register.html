@@ -7,9 +7,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>注册</title>
   <!-- 开发环境版本，包含了有帮助的命令行警告 -->
-  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> -->
+  <script src="./js/vue.js"></script>
   <!-- 引入样式 -->
   <link rel="stylesheet" href="https://unpkg.com/element-ui@2.15.7/lib/theme-chalk/index.css">
+  <!-- <link rel="stylesheet" href="./css/index.css"> -->
   <!-- 引入组件库 -->
   <!-- <script src="https://unpkg.com/element-ui/lib/index.js"></script> -->
   <script src="js/index.js"></script>
@@ -17,9 +19,10 @@
   <!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script> -->
   <script src="js/axios.min.js"></script>
   <!-- MDB icon -->
-  <link rel="icon" href="img/" type="image/x-icon">
+  <link rel="icon" href="../img/cqjtu.jpg" type="image/x-icon">
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+  <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css"> -->
+  <link rel="stylesheet" href="./css/all.css">
   <!-- Bootstrap core CSS -->
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <!-- Material Design Bootstrap -->
@@ -178,14 +181,14 @@
               console.log(res.data)
               if (res.data.status == 200) {
                 this.$message({
-                  message: '创建成功！',
+                  message: '注册成功！',
                   type: 'success'
                 });
                 window.location.href = './index.html'//跳转
               }
               else {
                 this.$message({
-                  message: '创建失败！',
+                  message: '注册失败！',
                   type: 'warning'
                 });
               }

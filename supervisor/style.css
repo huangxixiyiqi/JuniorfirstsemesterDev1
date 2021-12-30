@@ -6,7 +6,7 @@ header,
 }
 
 #intro {
-    background: url(https://img1.baidu.com/it/u=1999528604,3079771869&fm=26&fmt=auto&gp=0.jpg)no-repeat center center fixed;
+    background: url("../img/sample.jpg")no-repeat center center fixed;
     -webkit-background-size: cover; /* 针对Chrome, Safari, Edge等浏览器 */
     -moz-background-size: cover;    /* 针对Firefox浏览器 */
     -o-background-size: cover;      /* 针对Operallq */
@@ -28,7 +28,7 @@ header,
 }
 /* 导航栏颜色 */
 .nav-color{
-    background-color:  red !important;
+    background-color:  #00a1d7 !important;
 }
 /* 页面右侧回到顶部工具栏 */
 .to-top{

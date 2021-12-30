@@ -10,10 +10,11 @@
   <link rel="stylesheet" href="./css/reset.css">
   <link rel="stylesheet" href="./css/normalize.css">
   <!-- 开发环境版本，包含了有帮助的命令行警告 -->
-  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> -->
+  <script src="./js/vue.js"></script>
   <!-- 引入样式 -->
   <link rel="stylesheet" href="https://unpkg.com/element-ui@2.15.7/lib/theme-chalk/index.css">
-
+  <!-- <link rel="stylesheet" href="./css/index.css"> -->
   <!-- 引入组件库 -->
   <!-- <script src="https://unpkg.com/element-ui/lib/index.js"></script> -->
   <script src="js/index.js"></script>
@@ -21,9 +22,11 @@
   <!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script> -->
   <script src="js/axios.min.js"></script>
   <!-- MDB icon -->
-  <link rel="icon" href="img/" type="image/x-icon">
+  <link rel="icon" href="../img/cqjtu.jpg" type="image/x-icon">
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+  <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+   -->
+   <link rel="stylesheet" href="./css/all.css">
   <!-- Bootstrap core CSS -->
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <!-- Material Design Bootstrap -->
@@ -157,24 +160,7 @@
               });
             }
           })
-          // if (this.ruleForm.account == 1 && this.ruleForm.pass == 1) {
-
-          //   //保存cookie信息，=号前面是Name，=后面是value
-          //   document.cookie = 'user=彭海栗大帅哥;path=/'
-          //   document.cookie = 'password=123;path=/'
-          //   window.location.href = './admin/admin.html'//跳转
-          //   //window.location.href = './frontdesk/frontdesk.html'//跳转
-          //   //window.location.href = './staff/staff.html'//跳转
-          //   //window.location.href = './supervisor/supervisor.html'//跳转
-          // }
-          // this.$refs[formName].validate((valid) => {
-          //   if (valid) {
-          //     alert('submit!');
-          //   } else {
-          //     console.log('error submit!!');
-          //     return false;
-          //   }
-          // });
+         
         },
         register() {
           window.location.href = './register.html'//跳转

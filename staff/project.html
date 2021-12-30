@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-12-23 10:16:32
- * @LastEditTime: 2021-12-23 10:23:21
+ * @LastEditTime: 2021-12-29 14:41:45
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \FrontEndcode\staff\project.html
@@ -15,11 +15,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Staff</title>
     <!-- 重置样式表 -->
-    <link rel="stylesheet" href="../css/reset.css">
-    <link rel="stylesheet" href="../css/normalize.css">
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/normalize.css">
     <!-- 开发环境版本，包含了有帮助的命令行警告 -->
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> -->
     <!-- <script src="//unpkg.com/vue/dist/vue.js"></script> -->
+    <script src="../js/vue.js"></script>
     <!-- 引入样式 -->
     <link rel="stylesheet" href="https://unpkg.com/element-ui@2.15.7/lib/theme-chalk/index.css">
     <!-- <link rel="stylesheet" href="../css/index.css"> -->
@@ -34,9 +35,10 @@
     <!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script> -->
     <script src="../js/axios.min.js"></script>
     <!-- MDB icon -->
-    <link rel="icon" href="../img/mdb-favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../img/cqjtu.jpg" type="image/x-icon">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+    <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css"> -->
+    <link rel="stylesheet" href="../css/all.css">
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <!-- Material Design Bootstrap -->
@@ -89,9 +91,7 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="./project.html">项目</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">查询客户信息</a>
-                            </li>
+                            
 
                         </ul>
                         <!-- Links -->
@@ -343,11 +343,11 @@
                     <el-progress :text-inside="true" :stroke-width="26" v-bind:percentage="temp.project_schedule"
                         style="line-height: 40px;">
                     </el-progress>
-                    <el-button plain type="danger" @click="dialogVisible4 = true">回滚</el-button>
+                    <!-- <el-button plain type="danger" @click="dialogVisible4 = true">回滚</el-button> -->
                 </el-form-item>
                 <el-divider></el-divider>
-                <el-form-item label="任务列表">
-                    <!-- <el-select v-model="taskstatus" placeholder="请选择任务状态">
+                <!-- <el-form-item label="任务列表"> -->
+                <!-- <el-select v-model="taskstatus" placeholder="请选择任务状态">
                         <el-option v-for="item in options5" :key="item.value" :label="item.label" :value="item.value">
                         </el-option>
                     </el-select>
@@ -355,12 +355,12 @@
                         <el-option v-for="item in options4" :key="item.value" :label="item.label" :value="item.value">
                         </el-option>
                     </el-select> -->
-                </el-form-item>
+                <!-- </el-form-item> -->
 
             </el-form>
             <!-- 任务列表 -->
 
-            <el-table :data="task_data" height="700" style="width: 100%;" @cell-dblclick="opentaskDetails">
+            <!-- <el-table :data="task_data" height="700" style="width: 100%;" @cell-dblclick="opentaskDetails">
                 <el-table-column label="任务Id" prop="task_id" class="td-id" width="150">
                 </el-table-column>
                 <el-table-column label="任务性质" prop="task_property" width="100">
@@ -388,9 +388,9 @@
                         <el-button @click="" style="border:none;color:transparent;background-color:transparent;">edit
                         </el-button>
                         <!-- <el-button type="danger" @click="handleDelete(scope.$index, scope.row)">delete</el-button> -->
-                    </template>
+            <!-- </template>
                 </el-table-column>
-            </el-table>
+            </el-table> -->
 
         </el-dialog>
 
@@ -466,6 +466,13 @@
         var app = new Vue({
             el: "#app",
             created() {
+                if (getCookie('department') == null) {
+                    window.location.href = '../index.html'
+                } else if (getCookie('department') == '前台') {
+                    window.location.href = '../frontdesk/frontdesk.html'
+                } else if (getCookie('department') == '老板') {
+                    window.location.href = '../admin/admin.html'
+                }
                 var s = ''
                 s = getCookie('job')
                 if (s.indexOf('主管') != -1) {
@@ -869,77 +876,9 @@
                         window.location.href = './project.html'
                     })
                 },
-                // 创建项目
-                create_project() {
-                    this.form.project_beg_time = this.form.date1 + this.form.date2
 
-                    if (this.form.project_name == '') {
-                        alert('请输入项目名称！')
-                    } else if (this.form.client_id == '') {
-                        alert('请选择客户！')
-                    } else {
-                        console.log(this.form)
-                        axios.post(port + 'project/add_project', this.form).then(res => {
-                            console.log(res.data)
-                            if (res.data.msg == '录入成功') {
-                                this.$message({
-                                    message: '创建成功!',
-                                    type: 'success'
-                                });
-                                window.location.href = './project.html'
-                            }
-                        })
-                    }
-
-                },
-                create_task() {
-                    this.form1.task_distribution_begin_time = this.form1.begin_date1 + ' ' + this.form1.begin_date2
-                    this.form1.task_distribution_end_time = this.form1.end_date1 + ' ' + this.form1.end_date2
-                    console.log(this.form1)
-                    axios.post(port + 'task/add_task_distribution', this.form1).then(res => {
-                        console.log(res.data)
-                        if (res.data.msg == '录入成功') {
-                            this.$message({
-                                message: '分配任务成功!',
-                                type: 'success'
-                            });
-                            window.location.href = './project.html'
-                        }
-                    })
-                },
-                // 回滚
-                back() {
-                    this.$confirm('此操作将回滚该文件, 是否继续?', '提示', {
-                        confirmButtonText: '确定',
-                        cancelButtonText: '取消',
-                        type: 'warning'
-                    }).then(() => {
-                        axios.post(port + 'project/modify_project_schedule?project_id=' + this.temp.project_id + '&project_state=' + this.radio1).then(res => {
-                            console.log(res.data)
-                            if (res.data.status == 200) {
-                                this.$message({
-                                    type: 'success',
-                                    message: '回滚成功!'
-                                });
-                                window.location.href = './project.html'
-                            } else {
-                                this.$message({
-                                    type: 'warning',
-                                    message: '回滚失败!'
-                                });
-                            }
-
-                        })
-
-                    }).catch(() => {
-                        this.$message({
-                            type: 'info',
-                            message: '已取消回滚'
-                        });
-                    });
-                },
                 handle(index, row) {
-                    window.open(port)
+                    window.open(port + 'folder/?pdir=' + row.project_name + '-' + row.client_name + '-' + row.project_beg_time.toString().split(' ')[0])
                 },
 
             },

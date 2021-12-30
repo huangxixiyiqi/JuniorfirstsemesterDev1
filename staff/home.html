@@ -7,11 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Staff</title>
     <!-- 重置样式表 -->
-    <link rel="stylesheet" href="../css/reset.css">
-    <link rel="stylesheet" href="../css/normalize.css">
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/normalize.css">
     <!-- 开发环境版本，包含了有帮助的命令行警告 -->
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> -->
     <!-- <script src="//unpkg.com/vue/dist/vue.js"></script> -->
+    <script src="../js/vue.js"></script>
     <!-- 引入样式 -->
     <link rel="stylesheet" href="https://unpkg.com/element-ui@2.15.7/lib/theme-chalk/index.css">
     <!-- <link rel="stylesheet" href="../css/index.css"> -->
@@ -26,9 +27,10 @@
     <!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script> -->
     <script src="../js/axios.min.js"></script>
     <!-- MDB icon -->
-    <link rel="icon" href="../img/mdb-favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../img/cqjtu.jpg" type="image/x-icon">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+    <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css"> -->
+    <link rel="stylesheet" href="../css/all.css">>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <!-- Material Design Bootstrap -->
@@ -81,10 +83,8 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="./project.html">项目</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">查询客户信息</a>
-                            </li>
-                            
+
+
                         </ul>
                         <!-- Links -->
 
@@ -198,6 +198,13 @@
         var app = new Vue({
             el: "#app",
             created() {
+                if (getCookie('department') == null) {
+                    window.location.href = '../index.html'
+                } else if (getCookie('department') == '前台') {
+                    window.location.href = '../frontdesk/frontdesk.html'
+                } else if (getCookie('department') == '老板') {
+                    window.location.href = '../admin/admin.html'
+                }
                 //合并时，读取账号信息，如果该账号是员工，则不显示切换按钮，是主管则显示
                 var s = ''
                 s = getCookie('job')
@@ -258,19 +265,26 @@
                 onSubmit: function () {
                     axios.post(port + 'user/update_staff_info/' + getCookie('staff_id'), this.form).then(res => {
                         console.log(res.data)
-                        this.$message({
-                            message: '修改成功!',
-                            type: 'success'
-                        });
-                        delCookie('name')
-                        delCookie('job')
-                        delCookie('department')
-                        delCookie('phone')
-                        document.cookie = 'job=' + this.form.job + ';path=/'
-                        document.cookie = 'department=' + this.form.department + ';path=/'
-                        document.cookie = 'name=' + this.form.name + ';path=/'
-                        document.cookie = 'phone=' + this.form.phone + ';path=/'
-                        this.username = this.form.name
+                        if (res.data.status == 200) {
+                            this.$message({
+                                message: '修改成功!',
+                                type: 'success'
+                            });
+                            delCookie('name')
+                            delCookie('job')
+                            delCookie('department')
+                            delCookie('phone')
+                            document.cookie = 'job=' + this.form.job + ';path=/'
+                            document.cookie = 'department=' + this.form.department + ';path=/'
+                            document.cookie = 'name=' + this.form.name + ';path=/'
+                            document.cookie = 'phone=' + this.form.phone + ';path=/'
+                            this.username = this.form.name
+                        }else{
+                            this.$message({
+                                message: '修改失败!',
+                                type: 'warning'
+                            });
+                        }
                     })
                 },
                 exit: function () {

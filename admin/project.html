@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-12-17 11:09:51
- * @LastEditTime: 2021-12-23 22:40:54
+ * @LastEditTime: 2021-12-30 17:38:09
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \FrontEndcode\admin\project.html
@@ -15,11 +15,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Administrator</title>
     <!-- 重置样式表 -->
-    <link rel="stylesheet" href="../css/reset.css">
-    <link rel="stylesheet" href="../css/normalize.css">
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/normalize.css">
     <!-- 开发环境版本，包含了有帮助的命令行警告 -->
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> -->
     <!-- <script src="//unpkg.com/vue/dist/vue.js"></script> -->
+    <script src="../js/vue.js"></script>
     <!-- 引入样式 -->
     <link rel="stylesheet" href="https://unpkg.com/element-ui@2.15.7/lib/theme-chalk/index.css">
     <!-- <link rel="stylesheet" href="../css/index.css"> -->
@@ -34,9 +35,10 @@
     <!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script> -->
     <script src="../js/axios.min.js"></script>
     <!-- MDB icon -->
-    <link rel="icon" href="../img/mdb-favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../img/cqjtu.jpg" type="image/x-icon">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+    <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css"> -->
+    <link rel="stylesheet" href="../css/all.css">
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <!-- Material Design Bootstrap -->
@@ -342,14 +344,7 @@
                 </el-form-item>
                 <el-divider></el-divider>
                 <el-form-item label="任务列表">
-                    <!-- <el-select v-model="taskstatus" placeholder="请选择任务状态">
-                        <el-option v-for="item in options5" :key="item.value" :label="item.label" :value="item.value">
-                        </el-option>
-                    </el-select>
-                    <el-select v-model="taskproperty" placeholder="请选择任务性质">
-                        <el-option v-for="item in options4" :key="item.value" :label="item.label" :value="item.value">
-                        </el-option>
-                    </el-select> -->
+                    
                 </el-form-item>
 
             </el-form>
@@ -470,6 +465,15 @@
         var app = new Vue({
             el: "#app",
             created() {
+                if (getCookie('department') == null) {
+                    window.location.href = '../index.html'
+                }else if(getCookie('department') == '主管'){
+                    window.location.href ='../supervisor/supervisor.html'
+                }else if(getCookie('department') == '员工'){
+                    window.location.href ='../staff/staff.html'
+                }else if(getCookie('department') == '前台'){
+                    window.location.href ='../frontdesk/frontdesk.html'
+                }
                 axios.get(port + 'project/find_all').then(res => {
                     console.log(res.data)
                     data = res.data.data
@@ -590,7 +594,7 @@
                         end_date1: '',
                         end_date2: '',
                         // task_distribution_state:'已分配',
-                        task_distribution_is_accepted: '否',
+                        task_distribution_is_accepted: '未接受',
                         task_distribution_begin_time: '',
                         task_distribution_end_time: '',
                         task_info: '',
@@ -901,7 +905,7 @@
                     }).then(() => {
                         axios.post(port + 'project/modify_project_schedule?project_id=' + this.temp.project_id + '&project_state=' + this.radio1).then(res => {
                             console.log(res.data)
-                            if (res.data.status == 200) {
+                            if (res.data.msg == '回滚成功') {
                                 this.$message({
                                     type: 'success',
                                     message: '回滚成功!'
@@ -910,7 +914,7 @@
                             } else {
                                 this.$message({
                                     type: 'warning',
-                                    message: '回滚失败!'
+                                    message: res.data.msg
                                 });
                             }
 
@@ -975,7 +979,7 @@
                             if (res.data.status == 200) {
                                 this.$message({
                                     type: 'success',
-                                    message: '发送意见成功'
+                                    message: '审核成功！'
                                 });
                             }
 

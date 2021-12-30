@@ -15,8 +15,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Administrator</title>
     <!-- 重置样式表 -->
-    <link rel="stylesheet" href="./css/reset.css">
-    <link rel="stylesheet" href="./css/normalize.css">
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/normalize.css">
     <!-- 开发环境版本，包含了有帮助的命令行警告 -->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <!-- <script src="//unpkg.com/vue/dist/vue.js"></script> -->
@@ -27,6 +27,7 @@
     <!-- 引入组件库 -->
     <!-- <script src="https://unpkg.com/element-ui/lib/index.js"></script> -->
     <script src="../js/index.js"></script>
+    <script src="../js/echarts.js"></script>
     <!-- <script src="//unpkg.com/element-ui@2.15.7/lib/index.js"></script> -->
 
 
@@ -34,7 +35,7 @@
     <!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script> -->
     <script src="../js/axios.min.js"></script>
     <!-- MDB icon -->
-    <link rel="icon" href="../img/mdb-favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../img/cqjtu.jpg" type="image/x-icon">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
     <!-- Bootstrap core CSS -->
@@ -83,9 +84,6 @@
 </head>
 
 <body>
-
-    <!-- 部分变量名未改 -->
-
 
     <div id="app">
         <header>
@@ -170,37 +168,37 @@
                     <span>| {{innertitle}}</span>
                 </div>
                 <div class="content">
-                    <!-- 客户列表 -->
-                    <el-table :data="tableData" height="900" style="width: 100%;" id="content1"
-                        @row-click="openDetails">
-                        <el-table-column label="Id" prop="id" class="td-id" width="100">
-                        </el-table-column>
-                        <el-table-column label="姓名" prop="name" width="100">
-                        </el-table-column>
-                        <el-table-column label="手机号码" prop="phone" width="200">
-                        </el-table-column>
-                        <el-table-column label="部门" prop="qq" width="200">
-                        </el-table-column>
-                        <el-table-column label="评价" prop="email" width="300">
-                        </el-table-column>
-                        <el-table-column>
-                            <template slot="header" slot-scope="scope">
-                                <div style="width: 50%; height: 50px;margin-right: 1px;">
-                                    <el-input v-model="search_name" size="mini" placeholder="输入名字搜索" @input="query()" />
-                                </div>
-                                <div style="width: 50%; height: 50px;">
-                                    <el-input v-model="search_phone" size="mini" placeholder="输入手机号码搜索"
-                                        @input="query()" />
-                                </div>
-                            </template>
+                    <el-tooltip class="item" effect="dark" content="双击左键查看项目详细信息" placement="top-start">
+                        <el-table :data="tableData" height="900" style="width: 100%;" id="content1"
+                        @cell-dblclick="openDetails">
+                            <el-table-column label="Id" prop="staff_id" class="td-id" width="100">
+                            </el-table-column>
+                            <el-table-column label="姓名" prop="staff_name" width="300">
+                            </el-table-column>
+                            <el-table-column label="手机号码" prop="staff_phone" width="120">
+                            </el-table-column>
+                            <el-table-column label="部门" prop="staff_department" width="100">
+                            </el-table-column>
+                            <el-table-column>
+                                <template slot="header" slot-scope="scope">
+                                    <div style="width: 50%; height: 50px;margin-right: 1px;">
+                                        <el-input v-model="search_name" size="mini" placeholder="搜素用户"
+                                            @input="query()" />
+                                    </div>
+                                </template>
 
-                            <template slot-scope="scope">
-                                <el-button @click="handleEdit(scope.$index, scope.row)">Edit</el-button>
-                                <el-button type="danger" @click="handleDelete(scope.$index, scope.row)">
-                                    Delete</el-button>
-                            </template>
-                        </el-table-column>
-                    </el-table>
+                                <template slot-scope="scope">
+                                    <el-button @click="handleEdit(scope.$index, scope.row)">Edit</el-button>
+                                    <el-button @click="historyComment(scope.$index, scope.row)">
+                                        历史评价</el-button>
+                                    <el-button @click="historyMoney(scope.$index, scope.row)">
+                                        工资流水</el-button>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </el-tooltip>
+
+                   
                     <!-- 新建客户 -->
                     <el-form ref="form" :model="form" label-width="80px" id="content2">
                         <el-form-item label="姓名：">
@@ -227,70 +225,173 @@
         <el-dialog title="修改客户信息" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
             <el-form ref="form" :model="form" label-width="80px">
                 <el-form-item label="姓名：">
-                    <el-input v-model="form.name"></el-input>
+                    <el-input v-model="change_name" ></el-input>
                 </el-form-item>
                 <el-form-item label="手机号：">
-                    <el-input type="text" v-model="form.phone"></el-input>
+                    <el-input type="text" v-model="change_phone"></el-input>
                 </el-form-item>
-                <el-form-item label="QQ：">
-                    <el-input v-model="form.qq"></el-input>
+                <el-form-item label="部门：">
+                    <el-input v-model="change_department"></el-input>
                 </el-form-item>
-                <el-form-item label="E-mail：">
-                    <el-input type="text" v-model="form.email"></el-input>
+                <el-form-item label="职位：">
+                    <el-input type="text" v-model="change_job"></el-input>
                 </el-form-item>
 
             </el-form>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisible = false">取 消</el-button>
-                <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+                <el-button type="primary" @click="changeInfo">确 定</el-button>
             </span>
         </el-dialog>
 
         <!-- 右边弹出框 具体信息 -->
-        <el-drawer title="我是标题" :visible.sync="drawer" :with-header="false" size="800px">
+        <el-drawer title="我是标题" :visible.sync="drawer" :with-header="false" size="650px">
             <div style="width: 100%;height: 100%;padding: 40px 20px 0 20px;">
-                <el-row>
-                    <el-col :span="12" style=" height: 50px; ">
-                        <span class="drawer_leftitem">用户名：</span>
-                    </el-col>
-                    <el-col :span="12" style="text-align: center;">
-                        <span class="drawer_rightitem">1111</span>
-                    </el-col>
-                </el-row>
-                <el-row>
-                    <el-col :span="12" style=" height: 50px; ">
-                        <span class="drawer_leftitem">用户名：</span>
-                    </el-col>
-                    <el-col :span="12" style="text-align: center;">
-                        <span class="drawer_rightitem">1111</span>
-                    </el-col>
-                </el-row>
-                <el-row>
-                    <el-col :span="12" style=" height: 50px; ">
-                        <span class="drawer_leftitem">用户名：</span>
-                    </el-col>
-                    <el-col :span="12" style="text-align: center;">
-                        <span class="drawer_rightitem">1111</span>
-                    </el-col>
-                </el-row>
-                <el-row>
-                    <el-col :span="12" style=" height: 50px; ">
-                        <span class="drawer_leftitem">用户名：</span>
-                    </el-col>
-                    <el-col :span="12" style="text-align: center;">
-                        <span class="drawer_rightitem">1111</span>
-                    </el-col>
-                </el-row>
-                <el-row>
-                    <el-col :span="12" style=" height: 50px; ">
-                        <span class="drawer_leftitem">用户名：</span>
-                    </el-col>
-                    <el-col :span="12" style="text-align: center;">
-                        <span class="drawer_rightitem">1111</span>
-                    </el-col>
-                </el-row>
+                <!-- 部分变量名未改 -->
+
+                <h3 style="text-align:center">评价员工</h3>
+                <hr>
+                <br>
+
+                <div id="main" style="width: 600px;height:400px;"></div>
+                <div id="main2" style="width: 600px;height:400px;"></div>
+
+                <el-table
+                :data="proj_and_task"
+                style="width: 100%">
+                <el-table-column
+                  prop="parti_proj"
+                  label="参与项目"
+                  width="180">
+                </el-table-column>
+                <el-table-column
+                  prop="finish_proj"
+                  label="完成项目"
+                  width="180">
+                </el-table-column>
+                <el-table-column
+                  prop="acc_task"
+                  label="接受任务">
+                </el-table-column>
+                <el-table-column
+                  prop="finish_task"
+                  label="完成任务">
+                </el-table-column>
+              </el-table>
+              <br>
+              <br>
+              <br>
+              <br>
+              <br>
+              <br>
+              <br>
+              <el-row type="flex" class="row-bg">
+                <el-col :span="6"></el-col><el-button type="primary" @click="generateTable()">生成报表</el-button></el-col>
+                <el-col :span="6"></el-col><el-button type="primary" @click="giveMoney()">工资开具</el-button></el-col>
+                <el-col :span="6"></el-col><el-button type="primary" @click="staffEvaluation()">员工评价</el-button></el-col>
+              </el-row>
+              <br>
+              <br>
+              <br>
             </div>
         </el-drawer>
+
+        <!-- 右边弹出框 评价信息 -->
+        <el-drawer title="我是标题" :visible.sync="comment_drawer" :with-header="false" size="650px">
+            <div style="width: 100%;height: 100%;padding: 40px 20px 0 20px;">
+                <template>
+                    <el-table
+                      :data="commentData"
+                      style="width: 100%"
+                      max-height="250">
+
+                      <el-table-column
+                        fixed
+                        prop="comment_id"
+                        label="评价ID"
+                        width="150">
+                      </el-table-column>
+
+                      <el-table-column
+                        prop="comment_content"
+                        label="评价内容"
+                        width="500">
+                      </el-table-column>
+
+                      <el-table-column
+                        prop="comment_time"
+                        label="时间"
+                        width="250">
+                      </el-table-column>
+
+                      <el-table-column
+                        label="操作"
+                        width="120">
+                        <template slot-scope="scope">
+                          <el-button
+                          @click="deleteRowComment(scope.$index, scope.row)"
+                            type="text"
+                            size="small">
+                            修改
+                          </el-button>
+                        </template>
+                      </el-table-column>
+                    </el-table>
+                  </template>
+            </div>
+        </el-drawer>
+
+        <!-- 右边弹出框 历史工资 -->
+        <el-drawer title="我是标题" :visible.sync="money_drawer" :with-header="false" size="650px">
+            <div style="width: 100%;height: 100%;padding: 40px 20px 0 20px;">
+                <template>
+                    <el-table
+                      :data="moneyData"
+                      style="width: 100%"
+                      max-height="250">
+
+                      <el-table-column
+                        fixed
+                        prop="staff_turnover_id"
+                        label="工资id"
+                        width="150">
+                      </el-table-column>
+
+                      <el-table-column
+                        prop="staff_turnover_basic_salary"
+                        label="基础工资"
+                        width="150">
+                      </el-table-column>
+
+                      <el-table-column
+                        prop="staff_turnover_deduction"
+                        label="提成"
+                        width="250">
+                      </el-table-column>
+
+                      <el-table-column
+                        prop="staff_turnover_total"
+                        label="总工资"
+                        width="250">
+                      </el-table-column>
+
+                      <el-table-column
+                        label="操作"
+                        width="120">
+                        <template slot-scope="scope">
+                          <el-button
+                          @click="deleteRowMoney(scope.$index, scope.row)"
+                            type="text"
+                            size="small">
+                            修改
+                          </el-button>
+                        </template>
+                      </el-table-column>
+                    </el-table>
+                  </template>
+            </div>
+        </el-drawer>
+
 
         <!-- 生成报表 -->
         <el-dialog title="生成报表" :visible.sync="dialogVisible5" width="30%">
@@ -316,123 +417,76 @@
 
 
     <script>
-
         var app = new Vue({
             el: "#app",
+            created() {
+                if (getCookie('department') == null) {
+                    window.location.href = '../index.html'
+                }else if(getCookie('department') == '主管'){
+                    window.location.href ='../supervisor/supervisor.html'
+                }else if(getCookie('department') == '员工'){
+                    window.location.href ='../staff/staff.html'
+                }else if(getCookie('department') == '前台'){
+                    window.location.href ='../frontdesk/frontdesk.html'
+                }
+                axios.get(port + 'user/find_all_staff').then(res => {
+                    data = res.data.data
+                    for (let i in data) {
+                        this.tableData1.push({
+                            staff_id: data[i].staff_id,
+                            account_id: data[i].account_id,
+                            staff_name: data[i].name,
+                            staff_phone: data[i].phone,
+                            staff_department: data[i].department,
+                            staff_job: data[i].job
+                        })
+                    }
+                    this.tableData = this.tableData1
+                })
+
+                
+            },
             data() {
                 return {
                     username: getCookie('name'),
-                    src: "../img/mdb-favicon.ico",
-                    tableData: [{
-                        id: '1',
-                        name: '王小虎',
-                        phone: '123431321327',
-                        qq: "23234",
-                        email: '1231212@qq.com'
-                    }, {
-                        id: '1',
-                        name: '彭海丽',
-                        phone: '123456',
-                        qq: "23234",
-                        email: '1232@qq.com'
-                    }, {
-                        id: '1',
-                        name: '王小虎',
-                        phone: '123456',
-                        qq: "23234",
-                        email: '1232@qq.com'
-                    }, {
-                        id: '1',
-                        name: '王小虎',
-                        phone: '123456',
-                        qq: "23234",
-                        email: '1232@qq.com'
-                    }, {
-                        id: '1',
-                        name: '王小虎',
-                        phone: '123456',
-                        qq: "23234",
-                        email: '1232@qq.com'
-                    }, {
-                        id: '1',
-                        name: '王小虎',
-                        phone: '123456',
-                        qq: "23234",
-                        email: '1232@qq.com'
-                    }, {
-                        id: '1',
-                        name: '王小虎',
-                        phone: '123456',
-                        qq: "23234",
-                        email: '1232@qq.com'
-                    }],
+                    
+                    tableData: [],
+                    commentData: [],
+                    moneyData: [],
                     //tabledata的备份
-                    tableData1: [{
-                        id: '1',
-                        name: '王小虎',
-                        phone: '123431321327',
-                        qq: "23234",
-                        email: '1231212@qq.com'
-                    }, {
-                        id: '1',
-                        name: '彭海丽',
-                        phone: '123456',
-                        qq: "23234",
-                        email: '1232@qq.com'
-                    }, {
-                        id: '1',
-                        name: '王小虎',
-                        phone: '123456',
-                        qq: "23234",
-                        email: '1232@qq.com'
-                    }, {
-                        id: '1',
-                        name: '王小虎',
-                        phone: '123456',
-                        qq: "23234",
-                        email: '1232@qq.com'
-                    }, {
-                        id: '1',
-                        name: '王小虎',
-                        phone: '123456',
-                        qq: "23234",
-                        email: '1232@qq.com'
-                    }, {
-                        id: '1',
-                        name: '王小虎',
-                        phone: '123456',
-                        qq: "23234",
-                        email: '1232@qq.com'
-                    }, {
-                        id: '1',
-                        name: '王小虎',
-                        phone: '123456',
-                        qq: "23234",
-                        email: '1232@qq.com'
-                    }],
+                    tableData1: [], 
+                    proj_and_task: [], 
                     search_name: '',
                     search_phone: '',
                     innertitle: '员工列表',
-                    form: {
-                        name: '',
-                        qq: '',
-                        phone: '',
-                        email: ''
+                    form: { //声明变量的地方
+                        staff_name: '',
+                        staff_id: '',
+                        staff_phone: '',
+                        staff_department: '',
                     },
                     dialogVisible: false,
                     drawer: false,
+                    comment_drawer: false,
+                    money_drawer: false,
                     s: '',
                     dialogVisible5: false,
                     radio2: '',
+                    change_phone: '',
+                    change_name: '',
+                    change_department: '',
+                    change_job: '',
+                    temp:''
                 };
             },
+
             methods: {
                 //列表数据搜索
                 query() {
                     this.tableData = []
                     if (this.search_name != '' && this.search_phone != '') {
                         for (let i in this.tableData1) {
-                            if (this.tableData1[i].name.indexOf(this.search_name) != -1 && this.tableData1[i].phone.indexOf(this.search_phone) != -1) {
+                            if (this.tableData1[i].name.indexOf(this.search_name) != -1 && this.tableData1[i].staff_phone.indexOf(this.search_phone) != -1) {
                                 this.tableData.push(this.tableData1[i])
                             }
                         }
@@ -454,8 +508,66 @@
                     else {
                         this.tableData = this.tableData1
                     }
-
                 },
+
+                // 修改某条评价
+                deleteRowComment(index, row) {
+                    console.log(index)
+                    console.log(row)
+                    this.$prompt('请输入...', '修改评价内容', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    }).then(({ value }) => {
+                    
+                        dic = {'staff_evaluation_info': value}
+                        
+                        console.log(port + 'user/update_evaluate_info/'+this.commentData[index].comment_id, dic)
+
+                        axios.post(port + 'user/update_evaluate_info/'+this.commentData[index].comment_id, dic).then(res => {
+                            console.log(res)
+                        })
+
+                    this.$message({
+                        type: 'success',
+                        message: '修改成功！修改后的内容为: ' + value
+                    });
+                    }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '取消修改'
+                    });       
+                    });
+                },
+
+                deleteRowMoney(index, row) {
+                    console.log(index)
+                    console.log(row)
+                    this.$prompt('提成和其他工资不可修改，请输入总工资：', '修改工资', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    }).then(({ value }) => {
+                    
+                        dic = {'staff_turnover_total': value, 'staff_turnover_deduction': row.staff_turnover_deduction
+                        , 'staff_turnover_basic_salary': row.staff_turnover_basic_salary}
+                        
+                        console.log(port + 'user/update_staff_t/'+row.staff_turnover_id, dic)
+
+                        axios.post(port + 'user/update_staff_t/'+row.staff_turnover_id, dic).then(res => {
+                            console.log(res)
+                        })
+
+                    this.$message({
+                        type: 'success',
+                        message: '修改成功！修改后的内容为: ' + value
+                    });
+                    }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '取消修改'
+                    });       
+                    });
+                },
+
                 handleClose(done) {
                     this.$confirm('确认关闭？')
                         .then(_ => {
@@ -463,6 +575,17 @@
                         })
                         .catch(_ => { });
                 },
+
+                changeInfo(){
+                    console.log(this.temp)
+                    dic = {'name':this.change_name, 'phone':this.change_phone,
+                     'department':this.change_department, 'job':this.change_job}
+                    axios.post(port + 'user/update_staff_info/'+this.temp, dic).then(res => {
+                        console.log(res)
+                    })
+                    dialogVisible = false
+                },
+
                 exit: function () {
                     delCookie('user')
                     delCookie('password')
@@ -474,20 +597,214 @@
                 },
                 //table点击一行事件
                 openDetails(row, column, event) {
-                    console.log(row);
+                    // console.log(row);
                     this.drawer = true;
                     this.s = row
+                    this.temp = row.staff_id
+
+                    this.task_data = []
+                    this.task_data1 = []
+
+                    // 任务列表
+                    axios.get(port + 'software/get_record_table/1').then(res => {
+                        console.log(res)
+
+                        time_char = res.data
+                        xtime = []
+                        for (var i = 0; i < time_char.length; i++) {
+                            xtime.push(time.time)
+                        }
+
+                        var chartDom = document.getElementById('main');
+                        var myChart = echarts.init(chartDom);
+                        var option;
+
+                        option = {
+                            title: {
+                                text: '使用记录',
+                                left: 'center'
+                            },
+                            xAxis: {
+                                type: 'category',
+                                // data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+                                data: res.data.time
+                            },
+                            yAxis: {
+                                type: 'value'
+                            },
+                            series: [
+                                {
+                                    // data: [150, 230, 224, 218, 135, 147, 260],
+                                    data: res.data.work,
+                                    type: 'line'
+                                }
+                            ]
+                        };
+
+                        option && myChart.setOption(option);
+
+
+                        var chartDom2 = document.getElementById('main2');
+                        var myChart2 = echarts.init(chartDom2);
+                        var option2;
+
+                        option2 = {
+                            title: {
+                                text: '时间占比',
+                                left: 'center'
+                            },
+                            tooltip: {
+                                trigger: 'item'
+                            },
+                            legend: {
+                                orient: 'vertical',
+                                left: 'left'
+                            },
+                            series: [
+                                {
+                                    name: 'Access From',
+                                    type: 'pie',
+                                    radius: '50%',
+                                    data: [
+                                        { value: res.data.data[0][1], name: res.data.data[0][0] },
+                                        { value: res.data.data[1][1], name: res.data.data[1][0] },
+                                        { value: res.data.data[2][1], name: res.data.data[2][0] },
+                                        { value: res.data.data[3][1], name: res.data.data[3][0] },
+                                        { value: res.data.data[4][1], name: res.data.data[4][0] },
+                                    ],
+                                    emphasis: {
+                                        itemStyle: {
+                                            shadowBlur: 10,
+                                            shadowOffsetX: 0,
+                                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                        }
+                                    }
+                                }
+                            ]
+                        };
+
+                        option2 && myChart2.setOption(option2);
+                    })
+
+                    axios.get(port + 'user/fan_mei_hao/2').then(res => {
+                        console.log(res)
+                        this.proj_and_task = [{'parti_proj':res.data.p_all, 'finish_proj':res.data.p_finished,
+                         'acc_task':res.data.t_accepted, 'finish_task':res.data.t_finished}]
+                    })
                 },
                 handleEdit(index, row) {
                     console.log(index, row);
                     this.dialogVisible = true
+                    this.temp = row.staff_id
                 },
-                handleDelete(index, row) {
-                    console.log(index, row);
-                    // console.log(row.email)
-                    // row和index是键值对
-                    // console.log(row)
+                historyComment(index, row) {
+                    this.commentData = []
+                    axios.get(port + 'user/find_evaluate_info/'+this.tableData[index].staff_id).then(res => {
+                        data1 = res.data.p_all
+                        console.log(data1)
+                        for (let i in data1) {
+                            this.commentData.push({ 
+                                comment_id: data1[i].staff_evaluation_id,
+                                comment_content: data1[i].staff_evaluation_info,
+                                comment_time: data1[i].staff_evaluation_time
+                            })
+                        }
+                    })
+                    console.log(this.commentData)
+                    this.comment_drawer = true
                 },
+
+                historyMoney(index, row) {
+                    this.moneyData = []
+                    axios.get(port + 'user/find_staff_t/'+this.tableData[index].staff_id).then(res => {
+                        data1 = res.data.p_all
+                        console.log(data1)
+                        for (let i in data1) {
+                            this.moneyData.push({ 
+                                staff_turnover_id: data1[i].staff_turnover_id,
+                                staff_turnover_basic_salary: data1[i].staff_turnover_basic_salary,
+                                staff_turnover_deduction: data1[i].staff_turnover_deduction,
+                                staff_turnover_total: data1[i].staff_turnover_total,
+                            })
+                        }
+                    })
+                    console.log(this.commentData)
+                    this.money_drawer = true
+                }, 
+
+                staffEvaluation() {
+                    var levl = ''
+                    var content = ''
+                    work = [1,2,3,4,5,6] // 低于work[i]的被归为业绩第i档，完成的任务
+                    hard = [1,2,3,4,5,6] // 低于hard[i]的被归为努力第i档，接收的任务
+                    levels = 'EDCBAS'
+                    evalu = [['员工业绩和工作态度极差，今天就可开除', '员工业绩极差，认真程度很差，建议开除', '员工业绩极差，认真程度一般，建议开除或加强管理。', '员工业绩极差，认真程度较好，员工工作能力不强，建议开除或加强管理。', '员工业绩极差，认真程度很好，员工工作能力很差，建议开除或直新简单任务。', '员工业绩极差，认真程度极好，工作能力极差，建议负责简单工作。'], ['员工业绩很差，认真程度极差，建议开除', '员工业绩很差，认真程度很差，建议开除或加强管理。', '员工业绩很差，认真程度一般，建议开除或加强管理。', '员工业绩很差，认真程度较好，员工工作能力不强，建议开除或加强管理。', '员工业绩很差，认真程度较好，员工工作能力不强，建议开除或加强管理。', '员工业绩很差，认真程度极好，工作能力很差，建议负责简单工作。'], ['员工业绩一般，认真程度极差，较有潜力，建议加强管理', '员工业绩一般，认真程度很差，较有潜力，建议加强管理。', '员工业绩一般，认真程度一般，表现平平。', '员工业绩一般，认真程度较好，表现平平。', '员工业绩一般，认真程度很好，表现平平。', '员工业绩一般，认真程度极好，勤劳肯干型员工，可交付重要任务。'], ['员工业绩较好，认真程度极差，有潜力，需要加强管理', '员工业绩较好，认真程度很差，有潜力，建议加强管理，为其分配合适岗位。', '员工业绩较好，认真程度一般，可能潜力，建议加强管理，看其业绩表现。', '员工业绩较好，认真程度较好，表现较好。', '员工业绩较好，认真程度很好，表现较好。', '员工业绩较好，认真程度极好，勤劳肯干型员工，可交付重要任务。'], ['员工业绩很好，认真程度极差，很有潜力，可将其调入合适的岗位，发挥其潜力', '员工业绩很好，认真程度很差，很有潜力，可将其调入合适的岗位，发挥其潜力', '员工业绩很好，认真程度一般，很有潜力，可将其调入合适的岗位，发挥其潜力', '员工业绩很好，认真程度较好，优秀员工，适当奖励。', '员工业绩很好，认真程度很好，优秀员工，适当奖励。', '员工业绩很好，认真程度很好，优秀员工，加强奖励。'], ['员工业绩极好，认真程度极差，工作能力极强，建议手动查看其工作记录，看是否有错。', '员工业绩极好，认真程度很差，极有潜力，可询问其想要的岗位，发挥其潜力', '员工业绩极好，认真程度一般，极有潜力，可询问其想要的岗位，发挥其潜力', '员工业绩极好，认真程度较好，员工表现优异，适当奖励。', '员工业绩极好，认真程度很好，员工表现优异，奖励。', '员工业绩极好，认真程度很好，员工表现异常优异，若排除篡改系统，建议让位老板。']]
+                    var i = 0 //业绩
+                    var j = 0 //工作态度
+                    while(work[i] < this.proj_and_task[0]['finish_task']){
+                        i = i+1
+                    }
+                    while(work[j] < this.proj_and_task[0]['acc_task']){
+                        j = j+1
+                    }
+                    this.$alert(evalu[i][j], levels[i]+levels[j], {
+                    confirmButtonText: '确定',
+                    callback: action => {
+                        this.$message({
+                        type: 'info',
+                        message: `action: ${ action }`
+                        });
+
+                        dic = {'staff_id':this.temp, 'staff_evaluation_info': levels[i]+levels[j]+" "+evalu[i][j]}
+                        console.log(port + 'user/add_evaluate_info', dic)
+                        axios.post(port + 'user/add_evaluate_info', dic).then(res => {
+                            console.log(res)
+                        })
+                    }
+                    });
+                },
+
+
+                giveMoney() {
+                    var mon = 3000+10*this.proj_and_task[0]['finish_task']+100*this.proj_and_task[0]['finish_proj']
+
+                    this.$prompt('推荐工资：'+mon, '开工资', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    }).then(({ value }) => {
+                    
+                        dic = {'staff_id':this.temp, 
+                        'staff_turnover_deduction': 10*this.proj_and_task[0]['finish_task']+100*this.proj_and_task[0]['finish_proj'],
+                        'staff_turnover_basic_salary':3000,
+                        'staff_turnover_total': Number(value)}
+                        
+                        console.log(port + 'user/add_staff_t', dic)
+
+                        axios.post(port + 'user/add_staff_t', dic).then(res => {
+                            console.log(res)
+                        })
+
+                    this.$message({
+                        type: 'success',
+                        message: '开的工资是: ' + value
+                    });
+                    }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '取消修改'
+                    });       
+                    });
+
+                },
+
+
+                generateTable() {
+                    console.log(port + 'software/sw_report/'+this.temp)
+                    axios.get(port + 'software/sw_report/'+this.temp).then(res => {
+                        console.log(res)
+                    })
+                },
+
 
                 changetoList() {
                     // 修改左侧导航栏的样式
@@ -540,6 +857,8 @@
             }
 
         })
+
+
     </script>
 
 

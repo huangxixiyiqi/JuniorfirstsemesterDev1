@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-22 17:29:45
- * @LastEditTime: 2021-12-23 09:56:59
+ * @LastEditTime: 2021-12-29 14:23:01
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \MDB-Pro-4.12\admin\index.html
@@ -18,15 +18,16 @@
     <link rel="stylesheet" href="./css/reset.css">
     <link rel="stylesheet" href="./css/normalize.css">
     <!-- 开发环境版本，包含了有帮助的命令行警告 -->
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> -->
     <!-- <script src="//unpkg.com/vue/dist/vue.js"></script> -->
+    <script src="../js/vue.js"></script>
     <!-- 引入样式 -->
     <link rel="stylesheet" href="https://unpkg.com/element-ui@2.15.7/lib/theme-chalk/index.css">
-    <!-- <link rel="stylesheet" href="../css/index.css"> -->
+
 
     <!-- 引入组件库 -->
-    <!-- <script src="https://unpkg.com/element-ui/lib/index.js"></script> -->
-    <script src="../js/index.js"></script>
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <!-- <script src="../js/index.js"></script> -->
     <!-- <script src="//unpkg.com/element-ui@2.15.7/lib/index.js"></script> -->
 
 
@@ -34,9 +35,10 @@
     <!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script> -->
     <script src="../js/axios.min.js"></script>
     <!-- MDB icon -->
-    <link rel="icon" href="../img/mdb-favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../img/cqjtu.jpg" type="image/x-icon">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+    <!-- <link rel="stylesheet" href="../css/all.css"> -->
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <!-- Material Design Bootstrap -->
@@ -183,10 +185,22 @@
 
         var app = new Vue({
             el: "#app",
+            created() {
+                console.log(getCookie('staff_id'))
+                if (getCookie('department') == null) {
+                    window.location.href = '../index.html'
+                }else if(getCookie('department') == '主管'){
+                    window.location.href ='../supervisor/supervisor.html'
+                }else if(getCookie('department') == '员工'){
+                    window.location.href ='../staff/staff.html'
+                }else if(getCookie('department') == '前台'){
+                    window.location.href ='../frontdesk/frontdesk.html'
+                }
+            },
             data() {
                 return {
                     username: getCookie('name'),
-                    src: "../img/mdb-favicon.ico",
+                    // src: "../img/mdb-favicon.ico",
                     dialogVisible5: false,
                     radio2: '',
                 };

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-12-23 10:02:11
- * @LastEditTime: 2021-12-23 10:20:47
+ * @LastEditTime: 2021-12-29 14:41:28
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \FrontEndcode\supervisor\project.html
@@ -15,11 +15,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Supervisor</title>
     <!-- 重置样式表 -->
-    <link rel="stylesheet" href="../css/reset.css">
-    <link rel="stylesheet" href="../css/normalize.css">
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/normalize.css">
     <!-- 开发环境版本，包含了有帮助的命令行警告 -->
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> -->
     <!-- <script src="//unpkg.com/vue/dist/vue.js"></script> -->
+    <script src="../js/vue.js"></script>
     <!-- 引入样式 -->
     <link rel="stylesheet" href="https://unpkg.com/element-ui@2.15.7/lib/theme-chalk/index.css">
     <!-- <link rel="stylesheet" href="../css/index.css"> -->
@@ -34,9 +35,10 @@
     <!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script> -->
     <script src="../js/axios.min.js"></script>
     <!-- MDB icon -->
-    <link rel="icon" href="../img/mdb-favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../img/cqjtu.jpg" type="image/x-icon">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+    <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css"> -->
+    <link rel="stylesheet" href="../css/all.css">
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <!-- Material Design Bootstrap -->
@@ -91,9 +93,7 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="./project.html">项目</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">审核任务</a>
-                            </li>
+                            
                             <li class="nav-item">
                                 <a class="nav-link" href="#" @click="dialogVisible5 = true">生成报表</a>
                             </li>
@@ -469,6 +469,15 @@
         var app = new Vue({
             el: "#app",
             created() {
+                if (getCookie('department') == null) {
+                    window.location.href = '../index.html'
+                } else if (getCookie('department') == '前台') {
+                    window.location.href = '../frontdesk/frontdesk.html'
+                } else if (getCookie('department') == '老板') {
+                    window.location.href = '../admin/admin.html'
+                } else if (getCookie('department') == '员工') {
+                    window.location.href = '../staff/staff.html'
+                }
                 axios.get(port + 'project/find_all').then(res => {
                     console.log(res.data)
                     data = res.data.data
